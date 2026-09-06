@@ -1,0 +1,58 @@
+<mujoco model="scene_blades">
+    <include file="../../mjlab_microduck/robot/microduck/robot_allcollisions.xml" />
+    <!-- The include above sets meshdir="assets", which MuJoCo resolves
+         against THIS file's directory, not the included one. Point it
+         back at the upstream mesh folder. -->
+    <compiler meshdir="../../mjlab_microduck/robot/microduck/assets"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+        <rgba haze="0.15 0.25 0.35 1" />
+        <global azimuth="160" elevation="-20" />
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+            height="3072" />
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+            rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300" />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+            reflectance="0.2" />
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.5" dir="0 0 -1" directional="true" />
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" />
+    </worldbody>
+
+    <!-- Skate blades: one anisotropic pair per foot. The pair OVERRIDES geom
+         friction, so headless_rollout.py's foot-friction flag has no effect here.
+         The contact frame of a +Z plane is world-fixed: friction[0] acts along
+         world Y, friction[1] along world X (measured, see mdp_blades.py). So this
+         static pair is a blade only while the duck faces +X:
+           friction = "across along spin roll roll"
+         Training projects the blade onto the world axes from each foot's yaw
+         every step (scripts/blades_rollout.py does the same on CPU). -->
+    <contact>
+        <pair name="blade_left" geom1="left_foot_collision" geom2="floor" condim="4"
+              friction="1.0 0.08 0.005 0.0001 0.0001" />
+        <pair name="blade_right" geom1="right_foot_collision" geom2="floor" condim="4"
+              friction="1.0 0.08 0.005 0.0001 0.0001" />
+    </contact>
+
+    <keyframe>
+        <key name="INIT" qpos="0 0 0.12 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+        <key name="STAND" qpos="
+        0 0 0.12 1 0 0 0
+
+        0 -0.08726646259971647 -0.457924 -0.004940 0.452984
+        0.3490658503988659 0.3490658503988659 0 0
+        0 0.08726646259971647 0.457924 0.004940 -0.452984"
+         ctrl="
+        0 -0.08726646259971647 -0.457924 -0.004940 0.452984
+        0.3490658503988659 0.3490658503988659 0 0
+        0 0.08726646259971647 0.457924 0.004940 -0.452984"
+        />
+    </keyframe>
+</mujoco>

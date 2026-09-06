@@ -1,0 +1,50 @@
+<mujoco model="scene_pickup">
+    <!-- scene.xml plus something the duck can pick up in its mouth.
+
+         The 14 servos are legs and neck only: there is no jaw actuator in this
+         model, so a grasp cannot be simulated by closing a gripper. Instead the
+         object is welded to the jaw when the beak reaches it, and the weld is
+         released to drop it. `eq_active` toggles it at runtime; the constraint
+         has to exist at compile time, which is the whole reason for this file.
+
+         The cube is red so it reads against the yellow beak. 30 mm and 20 g -- small enough for the beak, light enough
+         not to change the gait the policy was trained with. -->
+    <include file="robot_allcollisions_mouth.xml" />
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+        <rgba haze="0.15 0.25 0.35 1" />
+        <global azimuth="160" elevation="-20" />
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+            height="3072" />
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+            rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300" />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+            reflectance="0.2" />
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.5" dir="0 0 -1" directional="true" />
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" />
+        <body name="cube" pos="0.4 0 0.015">
+            <freejoint name="cube_free"/>
+            <inertial pos="0 0 0" mass="0.02" diaginertia="3e-6 3e-6 3e-6"/>
+            <geom type="box" name="cube_geom" size="0.015 0.015 0.015"
+                  rgba="0.85 0.12 0.12 1" friction="0.8 0.005 0.0001"/>
+        </body>
+    </worldbody>
+
+    <equality>
+        <!-- Inactive until the beak reaches the cube; the task script flips it. -->
+        <weld name="mouth_grip" body1="mouth_jaw" body2="cube" active="false"
+              relpose="0 0 0 1 0 0 0" solref="0.02 1"/>
+    </equality>
+
+    <keyframe>
+        <key name="INIT" qpos="0 0 0.12 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  0.4 0 0.015 1 0 0 0"/>
+    </keyframe>
+</mujoco>

@@ -1,0 +1,44 @@
+<mujoco model="scene_beam">
+    <!-- scene.xml plus a raised beam along +x for the balance-beam task.
+
+         The floor stays: a foot that leaves the beam lands on it, and that
+         floor contact is how scripts/task_balance_beam.py detects a step-off.
+         The beam is a plain box with the floor's default friction, so the only
+         thing that differs from flat ground is its width.
+
+         The beam line below is a template. task_balance_beam.py rewrites it
+         (size = half-length half-width half-height, pos = centre) into a
+         sibling file scene_beam_w<W>.xml for each width it runs. The numbers
+         here are the defaults: 2.0 m long, 0.10 m wide, 0.04 m high, starting
+         0.30 m behind the duck. -->
+    <include file="../../mjlab_microduck/robot/microduck/robot_allcollisions.xml" />
+    <!-- The include above sets meshdir="assets", which MuJoCo resolves
+         against THIS file's directory, not the included one. Point it
+         back at the upstream mesh folder. -->
+    <compiler meshdir="../../mjlab_microduck/robot/microduck/assets"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+        <rgba haze="0.15 0.25 0.35 1" />
+        <global azimuth="160" elevation="-20" />
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+            height="3072" />
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+            rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300" />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+            reflectance="0.2" />
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.5" dir="0 0 -1" directional="true" />
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" />
+        <geom name="beam" type="box" size="1.0000 0.0500 0.0200" pos="0.7000 0 0.0200" rgba="0.85 0.65 0.35 1" />
+    </worldbody>
+    <keyframe>
+        <key name="INIT" qpos="0 0 0.12 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+    </keyframe>
+</mujoco>
