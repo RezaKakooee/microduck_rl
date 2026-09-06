@@ -276,3 +276,9 @@ for _task_id, _make_cfg, _kw, _rl_cfg, _robot_cfg in _BACKLASH_TASKS:
         rl_cfg=_rl_cfg,
         runner_cls=MicroduckOnPolicyRunner,
     )
+
+# Our own tasks (arabesque, spiral, ice, slopes, blades) live in
+# src/microduck_lab/rl/. These two lines are the only ones of ours in an
+# upstream file; keeping it to two is the point.
+from microduck_lab.rl import register as _microduck_lab_register  # noqa: E402
+_microduck_lab_register.register_all(MicroduckOnPolicyRunner)
