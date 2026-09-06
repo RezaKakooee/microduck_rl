@@ -38,3 +38,7 @@ backup_onnx/
 logdir/.claude/
 logdir/
 logdir/.claude/worktrees/
+
+# Videos, sheets and reports. Big, regenerable, and not code.
+local_storage/
+videos
