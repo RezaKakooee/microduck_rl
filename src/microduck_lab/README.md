@@ -26,8 +26,10 @@ path, so no `sys.path` juggling and no "run it from the repo root".
 | folder | scripts |
 |---|---|
 | `balance_board/` | `board`, `lqr`, `rocking`, `rocking_asym`, `pattern`, `expert` |
+| `crawl/` | `crawl`, `expert` (alternating), `baby` (synchronized tuck/drive); [comparison](docs/tasks/crawl.md) |
 | `love_story/` | `original`, `dispenser`, `v2` |
 | `objects/` | `pick_up`, `delivery`, `kick_ball`, `egg_on_head` |
+| `painting/` | `painting` (chair, brush, easel), `expert` (flower); [notes](docs/tasks/painting.md) |
 | `skating/` | `expert_spiral`, `blades_rollout`, `ice_experts/` |
 | `swing/` | `swing` (physical set), `expert` (phase-feedback pumping) |
 | `walking/` | `balance_beam`, `eval_slope` |
