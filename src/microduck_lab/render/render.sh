@@ -14,6 +14,7 @@
 #   clips       one clip per pretrained policy    -> videos/policy_demos/
 #   ice         four ice clips                    -> videos/ice_experts/
 #   pickup      three pick-up layouts             -> videos/pick_up/
+#   swing       physical playground swing        -> videos/swing/
 #   kick        three ball-kick layouts           -> videos/kick_ball/
 #
 # Output goes under videos/<task>/, which is a symlink into local_storage.
@@ -41,6 +42,12 @@ small_and_sheet() {
 }
 
 case "${1:-film}" in
+
+swing)
+  D=$(out swing)
+  $R microduck_lab.tasks.swing.expert --video "$D/duck_swing.mp4" \
+    --report "$D/swing_report.json" --trace "$D/swing_trace.npz" ;;
+
 
 film)
   D=$(out love_story)

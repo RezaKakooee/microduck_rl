@@ -29,6 +29,7 @@ path, so no `sys.path` juggling and no "run it from the repo root".
 | `love_story/` | `original`, `dispenser`, `v2` |
 | `objects/` | `pick_up`, `delivery`, `kick_ball`, `egg_on_head` |
 | `skating/` | `expert_spiral`, `blades_rollout`, `ice_experts/` |
+| `swing/` | `swing` (physical set), `expert` (phase-feedback pumping) |
 | `walking/` | `balance_beam`, `eval_slope` |
 
 ## Paths in the docs
@@ -56,7 +57,7 @@ bash src/microduck_lab/render/render.sh film-v2
 ```
 
 `render.sh` targets: `film`, `film-v2`, `film-dry`, `film-legacy`, `film-posed`,
-`film-puppet`, `story`, `clips`, `ice`, `pickup`, `kick`.
+`film-puppet`, `story`, `clips`, `ice`, `pickup`, `kick`, `swing`.
 
 ## The seam with upstream
 
