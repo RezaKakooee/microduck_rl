@@ -1,0 +1,416 @@
+<mujoco model="scene_beam">
+    <!-- scene.xml plus a raised beam along +x for the balance-beam task.
+
+         The floor stays: a foot that leaves the beam lands on it, and that
+         floor contact is how scripts/task_balance_beam.py detects a step-off.
+         The beam is a plain box with the floor's default friction, so the only
+         thing that differs from flat ground is its width.
+
+         The beam line below is a template. task_balance_beam.py rewrites it
+         (size = half-length half-width half-height, pos = centre) into a
+         sibling file scene_beam_w<W>.xml for each width it runs. The numbers
+         here are the defaults: 2.0 m long, 0.10 m wide, 0.04 m high, starting
+         0.30 m behind the duck. -->
+    <include file="../../mjlab_microduck/robot/microduck/robot_allcollisions.xml" />
+    <!-- The include above sets meshdir="assets", which MuJoCo resolves
+         against THIS file's directory, not the included one. Point it
+         back at the upstream mesh folder. -->
+    <compiler meshdir="../../mjlab_microduck/robot/microduck/assets"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+        <rgba haze="0.15 0.25 0.35 1" />
+        <global azimuth="160" elevation="-20" />
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+            height="3072" />
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+            rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300" />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+            reflectance="0.2" />
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.5" dir="0 0 -1" directional="true" />
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" />
+        <body name="bridge_root" pos="0 0 0">
+<geom name="landing_entry" type="box" pos="-0.3500 0 0.1700" size="0.15 0.2200 0.01" rgba="0.48 0.36 0.22 1"/>
+<geom name="landing_exit" type="box" pos="1.9500 0 0.1700" size="0.15 0.2200 0.01" rgba="0.48 0.36 0.22 1"/>
+<body name="seg_0" pos="-0.2000 0 0.1800">
+<joint name="joint_pitch_0" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_0" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_0" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_0_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_0_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_0_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_1" pos="0.1250 0 -0.0029">
+<joint name="joint_pitch_1" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_1" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_1" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_1_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_1_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_1_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_2" pos="0.1250 0 -0.0027">
+<joint name="joint_pitch_2" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_2" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_2" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_2_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_2_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_2_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_3" pos="0.1250 0 -0.0024">
+<joint name="joint_pitch_3" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_3" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_3" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_3_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_3_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_3_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_4" pos="0.1250 0 -0.0020">
+<joint name="joint_pitch_4" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_4" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_4" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_4_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_4_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_4_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_5" pos="0.1250 0 -0.0015">
+<joint name="joint_pitch_5" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_5" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_5" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_5_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_5_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_5_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_6" pos="0.1250 0 -0.0010">
+<joint name="joint_pitch_6" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_6" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_6" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_6_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_6_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_6_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_7" pos="0.1250 0 -0.0004">
+<joint name="joint_pitch_7" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_7" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_7" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_7_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_7_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_7_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_8" pos="0.1250 0 0.0001">
+<joint name="joint_pitch_8" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_8" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_8" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_8_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_8_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_8_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_9" pos="0.1250 0 0.0007">
+<joint name="joint_pitch_9" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_9" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_9" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_9_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_9_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_9_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_10" pos="0.1250 0 0.0013">
+<joint name="joint_pitch_10" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_10" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_10" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_10_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_10_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_10_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_11" pos="0.1250 0 0.0018">
+<joint name="joint_pitch_11" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_11" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_11" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_11_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_11_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_11_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_12" pos="0.1250 0 0.0022">
+<joint name="joint_pitch_12" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_12" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_12" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_12_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_12_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_12_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_13" pos="0.1250 0 0.0025">
+<joint name="joint_pitch_13" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_13" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_13" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_13_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_13_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_13_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_14" pos="0.1250 0 0.0028">
+<joint name="joint_pitch_14" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_14" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_14" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_14_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_14_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_14_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<body name="seg_15" pos="0.1250 0 0.0029">
+<joint name="joint_pitch_15" type="hinge" axis="0 1 0" pos="0 0 0" stiffness="0.5" damping="0.08"/>
+<joint name="joint_roll_15" type="hinge" axis="1 0 0" pos="0 0 0" stiffness="0.8" damping="0.1"/>
+<geom name="rung_15" type="capsule" fromto="0 -0.2000 0 0 0.2000 0" size="0.008" mass="0.015" rgba="0.38 0.28 0.18 1"/>
+<geom name="rope_long_15_-0.20" type="capsule" fromto="0 -0.2000 0 0.1250 -0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_-0.20" type="sphere" pos="0 -0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_-0.15" type="capsule" fromto="0 -0.1500 0 0.1250 -0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_-0.15" type="sphere" pos="0 -0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_-0.10" type="capsule" fromto="0 -0.1000 0 0.1250 -0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_-0.10" type="sphere" pos="0 -0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_-0.05" type="capsule" fromto="0 -0.0500 0 0.1250 -0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_-0.05" type="sphere" pos="0 -0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_0.00" type="capsule" fromto="0 0.0000 0 0.1250 0.0000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_0.00" type="sphere" pos="0 0.0000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_0.05" type="capsule" fromto="0 0.0500 0 0.1250 0.0500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_0.05" type="sphere" pos="0 0.0500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_0.10" type="capsule" fromto="0 0.1000 0 0.1250 0.1000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_0.10" type="sphere" pos="0 0.1000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_0.15" type="capsule" fromto="0 0.1500 0 0.1250 0.1500 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_0.15" type="sphere" pos="0 0.1500 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+<geom name="rope_long_15_0.20" type="capsule" fromto="0 0.2000 0 0.1250 0.2000 0" size="0.003" mass="0.002" rgba="0.14 0.16 0.10 1"/>
+<geom name="knot_15_0.20" type="sphere" pos="0 0.2000 0" size="0.0045" mass="0.001" rgba="0.14 0.16 0.10 1"/>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+</body>
+    </worldbody>
+    <keyframe>
+        <key name="INIT" qpos="0 0 0.12 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+    </keyframe>
+<equality><connect name="exit_anchor" body1="seg_15" body2="worldbody" anchor="1.8000 0 0.1800"/></equality>
+</mujoco>

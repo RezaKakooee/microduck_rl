@@ -1,0 +1,343 @@
+<mujoco model="scene_beam">
+    <!-- scene.xml plus a raised beam along +x for the balance-beam task.
+
+         The floor stays: a foot that leaves the beam lands on it, and that
+         floor contact is how scripts/task_balance_beam.py detects a step-off.
+         The beam is a plain box with the floor's default friction, so the only
+         thing that differs from flat ground is its width.
+
+         The beam line below is a template. task_balance_beam.py rewrites it
+         (size = half-length half-width half-height, pos = centre) into a
+         sibling file scene_beam_w<W>.xml for each width it runs. The numbers
+         here are the defaults: 2.0 m long, 0.10 m wide, 0.04 m high, starting
+         0.30 m behind the duck. -->
+    <include file="../../mjlab_microduck/robot/microduck/robot_allcollisions.xml" />
+    <!-- The include above sets meshdir="assets", which MuJoCo resolves
+         against THIS file's directory, not the included one. Point it
+         back at the upstream mesh folder. -->
+    <compiler meshdir="../../mjlab_microduck/robot/microduck/assets"/>
+
+    <visual>
+        <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+        <rgba haze="0.15 0.25 0.35 1" />
+        <global azimuth="160" elevation="-20" />
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+            height="3072" />
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+            rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300" />
+        <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+            reflectance="0.2" />
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 3.5" dir="0 0 -1" directional="true" />
+        <geom name="floor" size="0 0 0.05" pos="0 0 0" type="plane" material="groundplane" />
+        <body name="bridge_fixed">
+<geom name="landing_entry" type="box" pos="-0.2000 0 0.1700" size="0.2000 0.2200 0.01" rgba="0.50 0.38 0.24 1" friction="1.5 0.01 0.001"/>
+<geom name="landing_entry_base" type="box" pos="-0.2000 0 0.0800" size="0.2000 0.2100 0.0800" rgba="0.40 0.30 0.20 1"/>
+<geom name="landing_exit" type="box" pos="1.8000 0 0.1700" size="0.2000 0.2200 0.01" rgba="0.50 0.38 0.24 1" friction="1.5 0.01 0.001"/>
+<geom name="landing_exit_base" type="box" pos="1.8000 0 0.0800" size="0.2000 0.2100 0.0800" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_0.00_-1" type="capsule" fromto="0.0000 -0.1900 0 0.0000 -0.1900 0.4000" size="0.016" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_0.00_1" type="capsule" fromto="0.0000 0.1900 0 0.0000 0.1900 0.4000" size="0.016" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_top_0.00" type="capsule" fromto="0.0000 -0.1900 0.4000 0.0000 0.1900 0.4000" size="0.012" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_1.60_-1" type="capsule" fromto="1.6000 -0.1900 0 1.6000 -0.1900 0.4000" size="0.016" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_1.60_1" type="capsule" fromto="1.6000 0.1900 0 1.6000 0.1900 0.4000" size="0.016" rgba="0.40 0.30 0.20 1"/>
+<geom name="tower_top_1.60" type="capsule" fromto="1.6000 -0.1900 0.4000 1.6000 0.1900 0.4000" size="0.012" rgba="0.40 0.30 0.20 1"/>
+<geom name="cable_-1_0" type="capsule" fromto="0.0000 -0.1900 0.3900 0.0667 -0.1900 0.3740" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_1" type="capsule" fromto="0.0667 -0.1900 0.3740 0.1333 -0.1900 0.3594" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_2" type="capsule" fromto="0.1333 -0.1900 0.3594 0.2000 -0.1900 0.3463" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_3" type="capsule" fromto="0.2000 -0.1900 0.3463 0.2667 -0.1900 0.3344" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_4" type="capsule" fromto="0.2667 -0.1900 0.3344 0.3333 -0.1900 0.3240" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_5" type="capsule" fromto="0.3333 -0.1900 0.3240 0.4000 -0.1900 0.3150" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_6" type="capsule" fromto="0.4000 -0.1900 0.3150 0.4667 -0.1900 0.3074" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_7" type="capsule" fromto="0.4667 -0.1900 0.3074 0.5333 -0.1900 0.3011" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_8" type="capsule" fromto="0.5333 -0.1900 0.3011 0.6000 -0.1900 0.2963" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_9" type="capsule" fromto="0.6000 -0.1900 0.2963 0.6667 -0.1900 0.2928" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_10" type="capsule" fromto="0.6667 -0.1900 0.2928 0.7333 -0.1900 0.2907" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_11" type="capsule" fromto="0.7333 -0.1900 0.2907 0.8000 -0.1900 0.2900" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_12" type="capsule" fromto="0.8000 -0.1900 0.2900 0.8667 -0.1900 0.2907" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_13" type="capsule" fromto="0.8667 -0.1900 0.2907 0.9333 -0.1900 0.2928" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_14" type="capsule" fromto="0.9333 -0.1900 0.2928 1.0000 -0.1900 0.2963" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_15" type="capsule" fromto="1.0000 -0.1900 0.2963 1.0667 -0.1900 0.3011" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_16" type="capsule" fromto="1.0667 -0.1900 0.3011 1.1333 -0.1900 0.3074" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_17" type="capsule" fromto="1.1333 -0.1900 0.3074 1.2000 -0.1900 0.3150" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_18" type="capsule" fromto="1.2000 -0.1900 0.3150 1.2667 -0.1900 0.3240" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_19" type="capsule" fromto="1.2667 -0.1900 0.3240 1.3333 -0.1900 0.3344" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_20" type="capsule" fromto="1.3333 -0.1900 0.3344 1.4000 -0.1900 0.3463" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_21" type="capsule" fromto="1.4000 -0.1900 0.3463 1.4667 -0.1900 0.3594" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_22" type="capsule" fromto="1.4667 -0.1900 0.3594 1.5333 -0.1900 0.3740" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_-1_23" type="capsule" fromto="1.5333 -0.1900 0.3740 1.6000 -0.1900 0.3900" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_0" type="capsule" fromto="0.0000 0.1900 0.3900 0.0667 0.1900 0.3740" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_1" type="capsule" fromto="0.0667 0.1900 0.3740 0.1333 0.1900 0.3594" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_2" type="capsule" fromto="0.1333 0.1900 0.3594 0.2000 0.1900 0.3463" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_3" type="capsule" fromto="0.2000 0.1900 0.3463 0.2667 0.1900 0.3344" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_4" type="capsule" fromto="0.2667 0.1900 0.3344 0.3333 0.1900 0.3240" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_5" type="capsule" fromto="0.3333 0.1900 0.3240 0.4000 0.1900 0.3150" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_6" type="capsule" fromto="0.4000 0.1900 0.3150 0.4667 0.1900 0.3074" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_7" type="capsule" fromto="0.4667 0.1900 0.3074 0.5333 0.1900 0.3011" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_8" type="capsule" fromto="0.5333 0.1900 0.3011 0.6000 0.1900 0.2963" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_9" type="capsule" fromto="0.6000 0.1900 0.2963 0.6667 0.1900 0.2928" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_10" type="capsule" fromto="0.6667 0.1900 0.2928 0.7333 0.1900 0.2907" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_11" type="capsule" fromto="0.7333 0.1900 0.2907 0.8000 0.1900 0.2900" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_12" type="capsule" fromto="0.8000 0.1900 0.2900 0.8667 0.1900 0.2907" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_13" type="capsule" fromto="0.8667 0.1900 0.2907 0.9333 0.1900 0.2928" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_14" type="capsule" fromto="0.9333 0.1900 0.2928 1.0000 0.1900 0.2963" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_15" type="capsule" fromto="1.0000 0.1900 0.2963 1.0667 0.1900 0.3011" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_16" type="capsule" fromto="1.0667 0.1900 0.3011 1.1333 0.1900 0.3074" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_17" type="capsule" fromto="1.1333 0.1900 0.3074 1.2000 0.1900 0.3150" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_18" type="capsule" fromto="1.2000 0.1900 0.3150 1.2667 0.1900 0.3240" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_19" type="capsule" fromto="1.2667 0.1900 0.3240 1.3333 0.1900 0.3344" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_20" type="capsule" fromto="1.3333 0.1900 0.3344 1.4000 0.1900 0.3463" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_21" type="capsule" fromto="1.4000 0.1900 0.3463 1.4667 0.1900 0.3594" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_22" type="capsule" fromto="1.4667 0.1900 0.3594 1.5333 0.1900 0.3740" size="0.005" rgba="0.45 0.36 0.25 1"/>
+<geom name="cable_1_23" type="capsule" fromto="1.5333 0.1900 0.3740 1.6000 0.1900 0.3900" size="0.005" rgba="0.45 0.36 0.25 1"/>
+</body>
+
+        <body name="rung_0" pos="0.0421 0 0.1764">
+            <joint name="j_z_0" type="slide" axis="0 0 1" stiffness="494.1" damping="22.49" range="-0.12 0.04"/>
+            <joint name="j_pitch_0" type="hinge" axis="0 1 0" stiffness="6.5" damping="0.82" range="-0.30 0.30"/>
+            <joint name="j_roll_0" type="hinge" axis="1 0 0" stiffness="5.1" damping="0.73" range="-0.25 0.25"/>
+            <geom name="cross_rope_0" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_0" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_0" type="capsule" fromto="0 0.1900 0 0 0.1900 0.2033" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_0" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.2033" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_0_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_0_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_1" pos="0.1219 0 0.1701">
+            <joint name="j_z_1" type="slide" axis="0 0 1" stiffness="431.5" damping="21.02" range="-0.12 0.04"/>
+            <joint name="j_pitch_1" type="hinge" axis="0 1 0" stiffness="5.7" damping="0.77" range="-0.30 0.30"/>
+            <joint name="j_roll_1" type="hinge" axis="1 0 0" stiffness="4.5" damping="0.68" range="-0.25 0.25"/>
+            <geom name="cross_rope_1" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_1" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_1" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1917" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_1" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1917" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_1_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_1_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_2" pos="0.2017 0 0.1646">
+            <joint name="j_z_2" type="slide" axis="0 0 1" stiffness="375.8" damping="19.62" range="-0.12 0.04"/>
+            <joint name="j_pitch_2" type="hinge" axis="0 1 0" stiffness="5.0" damping="0.72" range="-0.30 0.30"/>
+            <joint name="j_roll_2" type="hinge" axis="1 0 0" stiffness="4.0" damping="0.64" range="-0.25 0.25"/>
+            <geom name="cross_rope_2" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_2" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_2" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1814" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_2" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1814" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_2_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_2_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_3" pos="0.2814 0 0.1597">
+            <joint name="j_z_3" type="slide" axis="0 0 1" stiffness="327.1" damping="18.30" range="-0.12 0.04"/>
+            <joint name="j_pitch_3" type="hinge" axis="0 1 0" stiffness="4.4" damping="0.67" range="-0.30 0.30"/>
+            <joint name="j_roll_3" type="hinge" axis="1 0 0" stiffness="3.5" damping="0.60" range="-0.25 0.25"/>
+            <geom name="cross_rope_3" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_3" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_3" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1723" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_3" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1723" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_3_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_3_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_4" pos="0.3612 0 0.1555">
+            <joint name="j_z_4" type="slide" axis="0 0 1" stiffness="285.3" damping="17.09" range="-0.12 0.04"/>
+            <joint name="j_pitch_4" type="hinge" axis="0 1 0" stiffness="3.9" damping="0.63" range="-0.30 0.30"/>
+            <joint name="j_roll_4" type="hinge" axis="1 0 0" stiffness="3.1" damping="0.56" range="-0.25 0.25"/>
+            <geom name="cross_rope_4" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_4" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_4" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1646" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_4" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1646" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_4_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_4_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_5" pos="0.4410 0 0.1520">
+            <joint name="j_z_5" type="slide" axis="0 0 1" stiffness="250.5" damping="16.02" range="-0.12 0.04"/>
+            <joint name="j_pitch_5" type="hinge" axis="0 1 0" stiffness="3.4" damping="0.59" range="-0.30 0.30"/>
+            <joint name="j_roll_5" type="hinge" axis="1 0 0" stiffness="2.7" damping="0.53" range="-0.25 0.25"/>
+            <geom name="cross_rope_5" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_5" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_5" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1581" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_5" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1581" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_5_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_5_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_6" pos="0.5208 0 0.1493">
+            <joint name="j_z_6" type="slide" axis="0 0 1" stiffness="222.6" damping="15.10" range="-0.12 0.04"/>
+            <joint name="j_pitch_6" type="hinge" axis="0 1 0" stiffness="3.0" damping="0.56" range="-0.30 0.30"/>
+            <joint name="j_roll_6" type="hinge" axis="1 0 0" stiffness="2.4" damping="0.50" range="-0.25 0.25"/>
+            <geom name="cross_rope_6" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_6" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_6" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1529" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_6" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1529" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_6_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_6_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_7" pos="0.6006 0 0.1472">
+            <joint name="j_z_7" type="slide" axis="0 0 1" stiffness="201.8" damping="14.37" range="-0.12 0.04"/>
+            <joint name="j_pitch_7" type="hinge" axis="0 1 0" stiffness="2.8" damping="0.53" range="-0.30 0.30"/>
+            <joint name="j_roll_7" type="hinge" axis="1 0 0" stiffness="2.2" damping="0.48" range="-0.25 0.25"/>
+            <geom name="cross_rope_7" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_7" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_7" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1490" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_7" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1490" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_7_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_7_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_8" pos="0.6803 0 0.1458">
+            <joint name="j_z_8" type="slide" axis="0 0 1" stiffness="187.8" damping="13.87" range="-0.12 0.04"/>
+            <joint name="j_pitch_8" type="hinge" axis="0 1 0" stiffness="2.6" damping="0.52" range="-0.30 0.30"/>
+            <joint name="j_roll_8" type="hinge" axis="1 0 0" stiffness="2.1" damping="0.46" range="-0.25 0.25"/>
+            <geom name="cross_rope_8" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_8" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_8" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1465" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_8" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1465" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_8_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_8_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_9" pos="0.7601 0 0.1451">
+            <joint name="j_z_9" type="slide" axis="0 0 1" stiffness="180.9" damping="13.61" range="-0.12 0.04"/>
+            <joint name="j_pitch_9" type="hinge" axis="0 1 0" stiffness="2.5" damping="0.51" range="-0.30 0.30"/>
+            <joint name="j_roll_9" type="hinge" axis="1 0 0" stiffness="2.0" damping="0.45" range="-0.25 0.25"/>
+            <geom name="cross_rope_9" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_9" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_9" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1452" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_9" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1452" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_9_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_9_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_10" pos="0.8399 0 0.1451">
+            <joint name="j_z_10" type="slide" axis="0 0 1" stiffness="180.9" damping="13.61" range="-0.12 0.04"/>
+            <joint name="j_pitch_10" type="hinge" axis="0 1 0" stiffness="2.5" damping="0.51" range="-0.30 0.30"/>
+            <joint name="j_roll_10" type="hinge" axis="1 0 0" stiffness="2.0" damping="0.45" range="-0.25 0.25"/>
+            <geom name="cross_rope_10" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_10" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_10" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1452" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_10" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1452" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_10_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_10_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_11" pos="0.9197 0 0.1458">
+            <joint name="j_z_11" type="slide" axis="0 0 1" stiffness="187.8" damping="13.87" range="-0.12 0.04"/>
+            <joint name="j_pitch_11" type="hinge" axis="0 1 0" stiffness="2.6" damping="0.52" range="-0.30 0.30"/>
+            <joint name="j_roll_11" type="hinge" axis="1 0 0" stiffness="2.1" damping="0.46" range="-0.25 0.25"/>
+            <geom name="cross_rope_11" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_11" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_11" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1465" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_11" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1465" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_11_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_11_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_12" pos="0.9994 0 0.1472">
+            <joint name="j_z_12" type="slide" axis="0 0 1" stiffness="201.8" damping="14.37" range="-0.12 0.04"/>
+            <joint name="j_pitch_12" type="hinge" axis="0 1 0" stiffness="2.8" damping="0.53" range="-0.30 0.30"/>
+            <joint name="j_roll_12" type="hinge" axis="1 0 0" stiffness="2.2" damping="0.48" range="-0.25 0.25"/>
+            <geom name="cross_rope_12" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_12" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_12" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1490" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_12" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1490" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_12_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_12_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_13" pos="1.0792 0 0.1493">
+            <joint name="j_z_13" type="slide" axis="0 0 1" stiffness="222.6" damping="15.10" range="-0.12 0.04"/>
+            <joint name="j_pitch_13" type="hinge" axis="0 1 0" stiffness="3.0" damping="0.56" range="-0.30 0.30"/>
+            <joint name="j_roll_13" type="hinge" axis="1 0 0" stiffness="2.4" damping="0.50" range="-0.25 0.25"/>
+            <geom name="cross_rope_13" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_13" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_13" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1529" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_13" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1529" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_13_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_13_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_14" pos="1.1590 0 0.1520">
+            <joint name="j_z_14" type="slide" axis="0 0 1" stiffness="250.5" damping="16.02" range="-0.12 0.04"/>
+            <joint name="j_pitch_14" type="hinge" axis="0 1 0" stiffness="3.4" damping="0.59" range="-0.30 0.30"/>
+            <joint name="j_roll_14" type="hinge" axis="1 0 0" stiffness="2.7" damping="0.53" range="-0.25 0.25"/>
+            <geom name="cross_rope_14" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_14" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_14" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1581" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_14" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1581" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_14_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_14_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_15" pos="1.2388 0 0.1555">
+            <joint name="j_z_15" type="slide" axis="0 0 1" stiffness="285.3" damping="17.09" range="-0.12 0.04"/>
+            <joint name="j_pitch_15" type="hinge" axis="0 1 0" stiffness="3.9" damping="0.63" range="-0.30 0.30"/>
+            <joint name="j_roll_15" type="hinge" axis="1 0 0" stiffness="3.1" damping="0.56" range="-0.25 0.25"/>
+            <geom name="cross_rope_15" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_15" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_15" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1646" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_15" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1646" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_15_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_15_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_16" pos="1.3186 0 0.1597">
+            <joint name="j_z_16" type="slide" axis="0 0 1" stiffness="327.1" damping="18.30" range="-0.12 0.04"/>
+            <joint name="j_pitch_16" type="hinge" axis="0 1 0" stiffness="4.4" damping="0.67" range="-0.30 0.30"/>
+            <joint name="j_roll_16" type="hinge" axis="1 0 0" stiffness="3.5" damping="0.60" range="-0.25 0.25"/>
+            <geom name="cross_rope_16" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_16" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_16" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1723" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_16" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1723" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_16_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_16_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_17" pos="1.3983 0 0.1646">
+            <joint name="j_z_17" type="slide" axis="0 0 1" stiffness="375.8" damping="19.62" range="-0.12 0.04"/>
+            <joint name="j_pitch_17" type="hinge" axis="0 1 0" stiffness="5.0" damping="0.72" range="-0.30 0.30"/>
+            <joint name="j_roll_17" type="hinge" axis="1 0 0" stiffness="4.0" damping="0.64" range="-0.25 0.25"/>
+            <geom name="cross_rope_17" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_17" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_17" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1814" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_17" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1814" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_17_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_17_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_18" pos="1.4781 0 0.1701">
+            <joint name="j_z_18" type="slide" axis="0 0 1" stiffness="431.5" damping="21.02" range="-0.12 0.04"/>
+            <joint name="j_pitch_18" type="hinge" axis="0 1 0" stiffness="5.7" damping="0.77" range="-0.30 0.30"/>
+            <joint name="j_roll_18" type="hinge" axis="1 0 0" stiffness="4.5" damping="0.68" range="-0.25 0.25"/>
+            <geom name="cross_rope_18" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_18" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_18" type="capsule" fromto="0 0.1900 0 0 0.1900 0.1917" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_18" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.1917" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_18_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_18_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+
+        <body name="rung_19" pos="1.5579 0 0.1764">
+            <joint name="j_z_19" type="slide" axis="0 0 1" stiffness="494.1" damping="22.49" range="-0.12 0.04"/>
+            <joint name="j_pitch_19" type="hinge" axis="0 1 0" stiffness="6.5" damping="0.82" range="-0.30 0.30"/>
+            <joint name="j_roll_19" type="hinge" axis="1 0 0" stiffness="5.1" damping="0.73" range="-0.25 0.25"/>
+            <geom name="cross_rope_19" type="capsule" fromto="0 -0.1900 0 0 0.1900 0" size="0.007" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="mesh_tread_19" type="box" pos="0 0 -0.004" size="0.0413 0.1900 0.004" mass="0.0210" rgba="0.72 0.58 0.38 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+            <geom name="h_L_19" type="capsule" fromto="0 0.1900 0 0 0.1900 0.2033" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="h_R_19" type="capsule" fromto="0 -0.1900 0 0 -0.1900 0.2033" size="0.003" rgba="0.72 0.58 0.38 1"/>
+            <geom name="knot_19_-0.16" type="sphere" pos="0 -0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_-0.11" type="sphere" pos="0 -0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_-0.05" type="sphere" pos="0 -0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_+0.00" type="sphere" pos="0 0.0000 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_+0.05" type="sphere" pos="0 0.0533 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_+0.11" type="sphere" pos="0 0.1067 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/> <geom name="knot_19_+0.16" type="sphere" pos="0 0.1600 0.002" size="0.009" mass="0.0024" rgba="0.60 0.45 0.28 1" friction="1.6 0.01 0.001" solref="0.015 1.0" solimp="0.85 0.98 0.01 0.5 2"/>
+        </body>
+        
+    </worldbody>
+    <keyframe>
+        <key name="INIT" qpos="0 0 0.12 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+    </keyframe>
+</mujoco>

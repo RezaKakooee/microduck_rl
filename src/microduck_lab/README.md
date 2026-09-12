@@ -26,6 +26,7 @@ path, so no `sys.path` juggling and no "run it from the repo root".
 | folder | scripts |
 |---|---|
 | `balance_board/` | `board`, `lqr`, `rocking`, `rocking_asym`, `pattern`, `expert` |
+| `bridge/` | `bridge` (loose catenary suspension bridge with soft contact compliance); [doc](docs/tasks/suspension_bridge.md) |
 | `crawl/` | `crawl`, `expert` (alternating), `baby` (synchronized tuck/drive); [comparison](docs/tasks/crawl.md) |
 | `love_story/` | `original`, `dispenser`, `v2` |
 | `objects/` | `pick_up`, `delivery`, `kick_ball`, `egg_on_head` |

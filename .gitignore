@@ -7,7 +7,7 @@ wheels/
 *.egg-info
 .python-version
 # uv.lock
-
+MUJOCO_LOG.TXT
 
 
 # Virtual environments
