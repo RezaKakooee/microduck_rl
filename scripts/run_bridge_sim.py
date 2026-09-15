@@ -10,20 +10,7 @@ from microduck_lab.sim.duck_sim import CONTROL_DT, DECIMATION
 WALKING_ONNX = os.path.join(os.path.dirname(duck_sim.REPO), "microduck", "policies", "alpha_walking.onnx")
 TEMPLATE = paths.model("scene_beam.xml")
 
-def ground(model, data, adr, clearance=0.002, lo=0.15, hi=0.45):
-    for _ in range(40):
-        mid = 0.5 * (lo + hi)
-        data.qpos[adr + 2] = mid
-        mujoco.mj_forward(model, data)
-        if data.ncon > 0:
-            lo = mid
-        else:
-            hi = mid
-    data.qpos[adr + 2] = hi + clearance
-    mujoco.mj_forward(model, data)
-    return hi + clearance
-
-def build_test_bridge_xml(
+def build_soft_bridge_xml(
     start_x=0.0,
     length=2.0,
     width=0.44,
@@ -129,13 +116,13 @@ def build_test_bridge_xml(
 
     return fixed_xml + '\n'.join(rungs)
 
-def test_run(center_kz=160.0, speed=0.25):
-    b_xml = build_test_bridge_xml(center_kz=center_kz)
+def run_simulation(center_kz=180.0, speed=0.25):
+    b_xml = build_soft_bridge_xml(start_x=0.0, length=2.0, center_kz=center_kz)
     with open(TEMPLATE) as f:
         tmpl = f.read()
     needle = '<geom name="beam" type="box" size="1.0000 0.0500 0.0200" pos="0.7000 0 0.0200" rgba="0.85 0.65 0.35 1" />'
     scene_str = tmpl.replace(needle, b_xml)
-    scene_path = paths.model("scene_test_bridge.xml")
+    scene_path = paths.model("scene_test_bridge_active.xml")
     with open(scene_path, "w") as f:
         f.write(scene_str)
 
@@ -143,19 +130,21 @@ def test_run(center_kz=160.0, speed=0.25):
         model, data = duck_sim.load_scene(str(scene_path))
         policy, adr = duck_sim.make_policy(model, data, walking_onnx_path=WALKING_ONNX)
 
-        # Spawn duck on solid approach platform at x = -0.20
+        # Position duck on approach landing
         data.qpos[adr + 0] = -0.20
         data.qpos[adr + 1] = 0.0
+        data.qpos[adr + 2] = 0.18 + 0.125
         data.qpos[adr + 3:adr + 7] = [1, 0, 0, 0]
-        ground(model, data, adr)
+        mujoco.mj_forward(model, data)
 
         max_sink = 0.0
         max_rung_roll = 0.0
-        finish_x = 1.90
         success = False
+        finish_x = 1.90
 
-        print(f"Starting rollout with center_kz={center_kz:.1f} N/m...")
-        for step in range(550): # 11s
+        print(f"=== Starting Run: center_kz={center_kz:.1f} N/m, speed={speed:.2f} m/s ===", flush=True)
+
+        for step in range(500): # 10s
             t = step * CONTROL_DT
             x = float(data.qpos[adr])
             y = float(data.qpos[adr + 1])
@@ -178,7 +167,7 @@ def test_run(center_kz=160.0, speed=0.25):
             else:
                 aim = float(np.clip(-1.8 * y, -0.25, 0.25))
                 turn = float(np.clip(1.0 * (aim - yaw), -0.45, 0.45))
-                if t < 1.5:
+                if t < 1.4:
                     turn = 0.0
                 policy.set_vel_cmd(speed, 0.0, turn)
 
@@ -186,24 +175,23 @@ def test_run(center_kz=160.0, speed=0.25):
             for _ in range(DECIMATION):
                 mujoco.mj_step(model, data)
 
-            if step % 25 == 0:
-                print(f"t={t:4.1f}s | x={x:+.3f}m y={y*1000:+4.0f}mm z={z:+.3f}m | sink={max_sink*1000:4.1f}mm rung_roll={np.degrees(max_rung_roll):4.1f}° duck_roll={np.degrees(duck_roll):+4.1f}°")
+            if step % 50 == 0:
+                print(f"t={t:4.1f}s | x={x:+.3f}m y={y*1000:+4.0f}mm z={z:+.3f}m | sink={max_sink*1000:4.1f}mm rung_roll={np.degrees(max_rung_roll):4.1f}° duck_roll={np.degrees(duck_roll):+4.1f}°", flush=True)
 
             if x >= finish_x and not success:
-                print(f"--> SUCCESS! Reached finish line x={x:.2f}m at t={t:.1f}s! Max sink={max_sink*1000:.1f}mm, Rung roll={np.degrees(max_rung_roll):.1f}°")
+                print(f"--> SUCCESS! Crossed bridge! x={x:.2f}m at t={t:.1f}s | max_sink={max_sink*1000:.1f}mm, rung_roll={np.degrees(max_rung_roll):.1f}°", flush=True)
                 success = True
                 break
 
             if t > 1.0 and (abs(duck_roll) > np.radians(45.0) or z < 0.10):
-                print(f"--> FAILED (fell) at t={t:.1f}s: x={x:.3f}m, y={y:.3f}m, z={z:.3f}m, duck_roll={np.degrees(duck_roll):.1f}°")
+                print(f"--> FELL at t={t:.1f}s: x={x:.3f}m, y={y:.3f}m, z={z:.3f}m, duck_roll={np.degrees(duck_roll):.1f}°", flush=True)
                 break
 
-        print(f"Result: success={success}, max_sink={max_sink*1000:.1f}mm, max_rung_roll={np.degrees(max_rung_roll):.1f}°\n")
+        print(f"FINAL: success={success}, max_sink={max_sink*1000:.1f}mm, max_rung_roll={np.degrees(max_rung_roll):.1f}°\n", flush=True)
         return success
     finally:
         if os.path.exists(scene_path):
             os.remove(scene_path)
 
 if __name__ == "__main__":
-    for kz in [200.0, 160.0, 130.0]:
-        test_run(center_kz=kz, speed=0.25)
+    run_simulation(center_kz=180.0, speed=0.25)
