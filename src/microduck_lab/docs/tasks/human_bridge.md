@@ -1,138 +1,177 @@
-# Human bridge — a brother lies across a gap, his sister crosses on his back
+# Human bridge — a brother lies across a gap, his sister walks over his back
 
-**Dates:** 2026-09-25 to 2026-09-26.
-**Status:** NOT solved. He lies down as a bridge reliably. She has not yet
-**walked** across him. The one "success" (`scripted_try96`) was a fall across,
-not a walk.
+**Dates:** 2026-09-25 to 2026-09-27.
+**Status:** works in simulation, not every time. She WALKS across the real,
+physical brother under the strict rules (section 4). With the best policy
+(beam-v1, checkpoint 2000) she crosses 2 of 3 times from the normal start.
+Every failure happens at an edge of his body.
 
-Based on the viral clip of a boy lying across a gap outside an apartment so his
-little sister can walk over him.
+Based on the viral clip of a boy lying across a gap in the street so his little
+sister can cross over his back. The clip is in the repo as
+`videos/human_bridge/human-bridge-original.mp4` (source unknown).
 
-## 1. What works
+Blog post: https://rezakakooee.github.io/microduck-human-bridge/
 
-| Part | Where | Result |
+## 1. Result
+
+| What | Where |
+|---|---|
+| Best policy (ONNX, 61 in / 14 out) | `local_storage/hb_dev/rl_policy/s6_eval/beam_v1_iter2000.onnx` |
+| Its checkpoint | `logs/rsl_rl/velocity_sideways_beam/2026-09-27_09-40-07_sideways-beam-v1/model_2000.pt` |
+| Best film (1080p): he lies down, she walks across 1 s later | `videos/human_bridge/rl_policy/clean_15_i2000_settle1.0_x-0.23_smoothcam_1080p.mp4` |
+| Original clip on top, our run below (twice), no sound | `videos/human_bridge/rl_policy/human_bridge_inspiration_vs_microduck_v3_hq.mp4` |
+
+Crossings under the strict rules, from the normal start (x = -0.25 m, small jitter):
+
+| Checkpoint | Fixed copy of his body (replica) | The real, moving brother (story) |
 |---|---|---|
-| Two-duck world, BAM XL330 motors, physics-only guard | `tasks/human_bridge/world.py` | `World.step` refuses external forces and model edits after `start()` |
-| The set | `tasks/human_bridge/scene.py` | Her ledge, a 35 mm lower notch where he stands, a 100 mm gap (a real drop), a notch shelf for his head, the far ledge |
-| He lies down | `brother.py`: `LieDown`, `PLANK` | One joint-target blend. He falls forward; soles stay on the step; head lands on the far shelf |
-| He holds her weight | `brother.py`: `HoldStraight` | Integral on his joint targets. A 757 g load anywhere on his back: at most 5.5 mm sag |
-| The story + video | `story.py` | Phases wait → he_lies → cross → across. Strict "walked" checks (section 4) |
-| Frozen copy of his body for RL | `bake.py` → `bridge_pose.json` | Matches the simulated brother to 0.00 mm (test `Baked`) |
+| 1000 | 0 / 5 | 0 / 3 |
+| 2000 | 3 / 5 | 2 / 3 |
+| 2999 (last) | 2 / 5 | 2 / 3 |
 
-Video of him lying down: `videos/human_bridge/rl_policy/brother_lies_down.mp4`.
+**How she fails:** her foot lands tilted (17-25 deg), and her ankle bracket
+(6 mm above the sole) clips a ledge corner: at the 30 mm entry hole between her
+ledge and his feet, or at the far pit. The policy is blind: it cannot see edges.
+The result depends on where her feet happen to meet the edge: over 23 start
+positions, checkpoint 1000 crossed about 65% of the time.
 
-**PLANK (his bridge pose):** legs straight, ankles -/+1.57, head_pitch -1.2
-(head folds back like a person in a plank; without it a 60 mm dip over the
-neck), hip roll -/+0.38 (legs pressed together; otherwise a 64 mm gap between
-his legs on his centre line).
+## 2. Folders (one per policy)
 
-**Heights on his centre line (the corrected bake):** her ledge 0.329 m, his legs
-and trunk rise to 0.349, head 0.343, far ledge 0.315 (a 28 mm step down).
+| Policy | Code | RL task | Scratch | Videos |
+|---|---|---|---|---|
+| RL (this doc) | `tasks/human_bridge/rl_policy/` | `rl/rl_policy/` | `local_storage/hb_dev/rl_policy/` | `videos/human_bridge/rl_policy/` |
+| Scripted | `tasks/human_bridge/scripted_policy/` | `rl/scripted_policy/` | `local_storage/hb_dev/scripted_policy/` | `videos/human_bridge/scripted_policy/` |
+| Crawl | `tasks/human_bridge/crawl_policy/` | `rl/crawl_policy/` | `local_storage/hb_dev/crawl_policy/` | `videos/human_bridge/crawl_policy/` |
 
-## 2. Hard limits measured on this robot
+Each policy uses only its own folders. `tasks/human_bridge/rl_policy/` holds
+the world, set, brother, story, rules and bake that this doc describes.
 
-1. **She cannot stand on one foot.** Legs have no ankle roll; hip roll stops at
-   0.38 rad. Over one flat foot her centre of mass gets 1-5 mm inside the sole
-   at best. So slow foot-by-foot stepping is impossible; she only walks
-   dynamically.
-2. **Forward walking cannot work on him.** `alpha_walking` needs a path at least
-   115-120 mm wide and climbs at most 15 mm. His trunk is 64 mm wide. 6 of 6
-   runs fell off.
-3. **Sideways is the better fit.** Her feet go one behind the other along his
-   length; each 54 mm sole lies across his back. She stands facing -y, so her
-   left (+vy) points across the gap (+x).
+## 3. The world and the set (`tasks/human_bridge/rl_policy/`)
 
-## 3. What was tried for her, and why it failed
+| Part | File | Notes |
+|---|---|---|
+| Two ducks, BAM XL330 motors, physics-only guard | `world.py` | After `World.start()` only motor targets change the world. `step()` refuses external forces and changes to guarded model fields. |
+| The set (layout "F1w") | `scene.py` | Her ledge 335 mm (level with his shins), edge at x = -76 mm. Near step 300 mm. Gap 100 mm. Far shelf 256 mm under his head. Far ledge 322.5 mm. |
+| He lies down | `brother.py`: `LieDown`, `PLANK` | A 2 s joint-target blend. He falls forward; soles stay on the step; his neck servo rests on the far shelf. |
+| He holds himself straight | `brother.py`: `HoldStraight`, `SETTLE_S = 8` | An integral on his joint targets. Needs about 5 s to settle. With 757 g on his back: at most 2.7 mm sag. Lands well from 15 of 15 starts. |
+| Frozen copy of him for RL | `bake.py` -> `bridge_pose.json` | Baked after `SETTLE_S`, 39 solid meshes. Test `Baked` checks it sits on the real brother. |
+| The story and its rules | `story.py`: `Story`, `Judge` | See section 4. |
+
+**PLANK:** legs straight, ankles -/+1.57, head_pitch -1.2, hip roll -/+0.38
+(legs pressed together).
+
+**His back, as the physics sees it** (sole-rest height, F1w): her ledge 335 ->
+a 30 mm hole (35 mm deep) -> his feet about 16 mm lower -> shin servos 335
+(two rails, a hole between his legs) -> +4.7 mm onto his trunk -> head top 338 ->
+his head slopes down about 17 deg -> a 12-15 mm far pit -> far ledge 322.5.
+Where a sole can rest: 31-55 mm wide on his legs, 30-54 on his trunk, 22-31 on
+his head.
+
+## 4. The rules (`story.Judge`) — read this before claiming success
+
+A crossing counts only if, from the moment she starts walking:
+
+- her trunk stays upright (up >= 0.9, tilt at most about 25 deg);
+- only her feet touch anything (soles, and the foot shells 2 mm above them);
+- her feet touch only his body, her ledge (`near_top`) and the far ledge
+  (`far_top`) — side ledges, notch floors and the floor fail;
+- her trunk stays above `DROP_Z`, and he stays lying;
+- she really steps: at least 3 landings per foot on him, each after at least
+  2 ticks in the air and 5 mm of lift;
+- all of her ends past the far edge, then 3 s of standing with the rules on.
+
+The same rules score the fast replica test and the real story. Look at the
+video frames yourself before calling anything a success.
+
+## 5. The walker that works: `Mjlab-Velocity-SidewaysBeam-MicroDuck` (`rl/rl_policy/`)
+
+Why a new skill: measuring showed the old sideways walker (v4 iter 1000) plus a
+simple steering law crossed FLAT beams down to 28 mm wide. It failed on almost
+any step or ramp on a beam 48 mm wide or narrower. His back is exactly that.
+
+| Part | Choice |
+|---|---|
+| Terrain (`beam_terrain.py`) | 10 kinds x 10 rows of narrow beams (150 -> 28 mm) with steps, ramps, gaps, bumps, rounded tops, and a copy of his back. Harder rows only after success. |
+| Command (`mdp_beam.py`) | The deployment steering law every step: vy 0.08-0.14, vx = clip(-0.055 + 5 y, +-0.3), wz = clip(0.06 - 2 heading_err, +-0.4). Never zero. |
+| Rewards | Pay for new ground only (a ratchet), capped at 1.25 x the commanded speed. Other positive terms are gated on progress. Offset and heading costs saturate. A failure costs -10 after dt scaling. |
+| Terminations | The story rules: tilt, any non-foot contact, a foot off the beam, dropped. |
+| Motors | The story's motor model (no action or obs delay, 7.4 V). With the recipe's 15-30 ms delay, the old walker failed a flat 28 mm beam in training (8/32 vs 32/32). So this policy is for the simulator, not yet for the real robot. |
+| Training | Warm start from sideways v4 iter 1000; 3000 iterations, 4096 envs, about 3 h 12 min on one RTX A4500. |
+
+## 6. Hard limits of this robot
+
+1. **She cannot stand on one foot** (no ankle roll; hip roll stops at 0.38 rad).
+   She must keep walking.
+2. **Forward walking does not fit his back** (her feet are 84 mm apart).
+   Sideways, her feet go one behind the other along his body.
+3. **The foot site is at the sole bottom** (0.05 mm), not 10.3 mm above it as an
+   older note said.
+
+## 7. What was tried before, and why it failed
 
 | Approach | Result | Why |
 |---|---|---|
-| Static stepping expert (IK + gravity feedforward) | Abandoned | Limit 1 above |
-| `alpha_walking` + steering | Fell 6/6 | Limit 2 |
-| Belly crawl, CEM-searched gaits (3 families, ~3000 tries) | Best 140 of 390 mm | No grip on his narrow smooth back |
-| RL fine-tune `Mjlab-Bridge-Sideways-MicroDuck`, v1-v11b | Never walked across | See below |
-| Scripted look-ahead controller (other agents, `tasks/human_bridge_scripted/`) | try96 "success" = a fall across | Old checks too loose |
+| Static stepping (IK + gravity feedforward) | Abandoned | She cannot stand on one foot |
+| `alpha_walking` + steering, forward | Fell 6/6 | Too wide for his back |
+| Belly crawl, about 3000 searched gaits | Best 14 of 39 cm | Nothing to push against on his narrow, smooth back |
+| RL on his baked body, `Mjlab-Bridge-Sideways-MicroDuck` v1-v11b | Never crossed | Reward farms (lean and dive, march in place); scrambled bake in v1-v8 |
+| Scripted look-ahead controller (`scripted_policy/`) | 0 of 103 pass the strict rules | Searched commands never kept her upright past his hips |
+| Old walker v4 + steering, after reshaping the set | 0 of 21 on the replica | Height changes on a narrow path |
 
-### The RL runs (`rl/microduck_bridge_sideways_env_cfg.py`)
+## 8. Bugs and lessons
 
-Fine-tunes a sideways walker on a frozen copy of his lying body. 61D obs; the 6
-body-pose command slots carry bridge state (position along him, offset,
-heading error, height ahead, sink) — a simulation-only expert.
+- **Collision filter (fixed 2026-09-26).** Collision bits were set after compile,
+  so MuJoCo's per-body filter kept the thighs and neck of both ducks from ever
+  colliding. His neck rested 16.8 mm inside the far shelf. Now `world.arm()` sets
+  the bits on the spec before compile; test `Armed` locks it. Servos, thigh
+  plates and ankle brackets were also made solid.
+- **Bake frames (fixed 2026-09-26).** The first bake saved compiled mesh frames,
+  so RL runs v1-v8 trained on a scrambled brother. Test `Baked` locks it.
+- **Rewards that invite cheating.** Paying for world +x speed paid leaning,
+  rocking and diving. Event rewards are scaled by dt (a -5 fall cost was
+  really -0.1). Marching in place earned more than crossing. The fixes are in
+  section 5.
+- **Motor delay mismatch.** See section 5.
+- **Film camera.** A camera that switched its target when she started walking
+  made the video jump. The clean-film camera now always aims halfway between her
+  and the middle of the bridge.
 
-| Run | Change | What she did |
-|---|---|---|
-| v1 | first version | Learned to stand still on her ledge |
-| v2 | pay for +x speed; route spawns | Unlearned walking in 250 iterations |
-| v3 | progress weight 40, finish bonus | Rushed, fell off his side |
-| v4 | bridge state in the body-pose slots | Walked 22 s on him, then fell |
-| v5 | from stepping sideways v4 | Stopped 50-90 mm before her ledge edge |
-| v6-v8 | ledges raised to "ankle servo" height | Put him in a HOLE. Wrong: see bug |
-| v9 | corrected bake | Marched in place at the edge (64/64 time-outs) |
-| v10 | per-step "alive" pay removed | Still marched in place |
-| v11/v11b | fresh start, full exploration noise | Steps onto his legs, falls there (64/64), flat from iter 2750 to 5000 |
+## 9. Next steps
 
-**Big bug, fixed:** until the fix, `bake.py` saved each mesh's COMPILED frame;
-MuJoCo re-centres meshes again when it compiles the training scene, so every
-bridge run v1-v8 trained on a scrambled brother (thighs 56 mm off, soles 50 mm
-high, neck 77 mm low). That created a fake "48 mm ankle-servo wall". Fixed by
-saving the authored frame (`mesh_offset`); test `Baked` locks it.
+- A v2 run: keep 30-50% of the his-back envs at full difficulty without
+  demotion, and reward a flat sole at touchdown. This targets the edge failures.
+- Then sim-to-real: train with the robot's motor delays again.
 
-## 4. The success check (read this before claiming success)
-
-`story.py` now fails a crossing unless she WALKS:
-
-- trunk upright >= 0.9 (tilt <= ~25 deg) during the whole crossing;
-- only her soles touch him or the ledges (knees, body, head = fail);
-- all of her ends past the far ledge edge (`rearmost`), standing.
-
-The old checks (fall = tilt past 60 deg) let `scripted_try96` pass: she tipped
-over onto him at 6.4 s, lay across his head and the far ledge, and got up
-there. The scripted agents' runner (`human_bridge_scripted/run.py`) has its own
-loose checks and was not changed.
-
-## 5. The sideways walking skill (made for this task)
-
-`Mjlab-Velocity-Sideways-MicroDuck`, `rl/microduck_velocity_sideways_env_cfg.py`.
-Eval: `tasks/walking/sideways.py` (infer_policy path: scene.xml + BAM).
-
-| Version | Result |
-|---|---|
-| v1 | Strafes 170 mm/s both ways, but turns 40-110 deg per 6 s |
-| v2 | Turns less, but SLIDES its feet |
-| v3 | Still slides: swing peaks 1.7-3.4 mm of real lift |
-| v4 | Steps: swing peaks 10-20 mm; still turns 20-80 deg per 6 s |
-
-Lessons: the recipe never learned to strafe because hip-roll std 0.05 rad
-punished side steps and its loose velocity reward paid 67% for ignoring vy.
-The foot site sits 10.3 mm above a flat sole, so "swing height" targets must add
-that. The recipe's slip cost is squared, so slow slides were free.
-
-## 6. Ideas not yet tried
-
-- Make the gap wider so falling across is impossible (his length allows maybe
-  150-180 mm; check his support and load again).
-- Scripted controller with the strict checks as its objective.
-- RL with the strict checks as termination (tilt > 25 deg ends the episode).
-- Curriculum on the bridge: a wide flat plank first, then his real body.
-
-## 7. How to run
+## 10. How to run
 
 ```bash
-# the story (needs a bridge ONNX; exported by scripts/export.py)
-OPENBLAS_NUM_THREADS=1 .venv/bin/python -m microduck_lab.tasks.human_bridge.rl_policy.story --policy <bridge.onnx>
-sbatch -M cluster local_storage/hb_dev/rl_policy/from_first_chat/video.sbatch -m microduck_lab.tasks.human_bridge.rl_policy.story \
-    --policy <bridge.onnx> --video videos/human_bridge/<new_name>.mp4
-# rebake his body after changing PLANK or the set
-.venv/bin/python -m microduck_lab.tasks.human_bridge.rl_policy.bake
 # tests
 OPENBLAS_NUM_THREADS=1 .venv/bin/python -m unittest microduck_lab.tests.test_human_bridge
-OPENBLAS_NUM_THREADS=1 uv run --with pytest pytest src/microduck_lab/tests/test_sideways_cfg.py -q
+OPENBLAS_NUM_THREADS=1 uv run --with pytest pytest src/microduck_lab/tests/test_sideways_beam_cfg.py src/microduck_lab/tests/test_sideways_cfg.py -q
+
+# rebake his body after changing PLANK or the set
+.venv/bin/python -m microduck_lab.tasks.human_bridge.rl_policy.bake
+
+# train the beam walker (A4500; writes logs/rsl_rl/velocity_sideways_beam/<date>_sideways-beam-v1)
+CPUS=4 bash local_storage/hb_dev/rl_policy/s4_fix/launch_beam.sh performance 4096
+
+# export a checkpoint (use --checkpoint-file: --checkpoint N picks the warm-start folder)
+.venv/bin/python scripts/export.py Mjlab-Velocity-SidewaysBeam-MicroDuck \
+    --checkpoint-file logs/rsl_rl/velocity_sideways_beam/<run>/model_2000.pt --onnx-file out.onnx
+
+# score it: 5 replica + 3 real-story attempts, strict rules, a clip each (GPU debug node)
+sbatch -M cluster -p debug --gres=gpu:1 --cpus-per-task=16 --time=00:30:00 \
+    local_storage/hb_dev/rl_policy/s6_eval/eval_ckpt.sh 2000
+
+# one scored attempt by hand (always pass --steer BEAM_LAW for beam-task policies)
+MUJOCO_GL=egl .venv/bin/python local_storage/hb_dev/rl_policy/bench/story_steer.py \
+    --bake src/microduck_lab/tasks/human_bridge/rl_policy/bridge_pose.json --seeds 3 \
+    --policy out.onnx --steer BEAM_LAW --video 'videos/human_bridge/rl_policy/try_{n:02d}_s{seed}.mp4' --out res.json
+
+# the clean film (she starts 1 s after he lands, smooth camera, 1080p)
+MUJOCO_GL=egl .venv/bin/python local_storage/hb_dev/rl_policy/s6_eval/clean/clean_film.py \
+    --policy out.onnx --settle 1.0 --start-x -0.23 --video videos/human_bridge/rl_policy/<new>.mp4 --out res.json
 ```
 
-Dev helpers (not in git) in `local_storage/hb_dev/rl_policy/from_first_chat/`: `train.sbatch` (training),
-`video.sbatch`, `evalbridge2.sh` (export + story + training-sim rollout, with
-videos), `train_sim_rollout.py` (64 envs from her ledge in the training sim),
-`evalside.sh` + `feet.sh` (sideways foot lift / slip). Checkpoints:
-`logs/rsl_rl/bridge_sideways/`, `logs/rsl_rl/velocity_sideways/`.
-
-Videos never overwrite: every attempt gets a new name in `videos/human_bridge/`
-or `videos/sideways/`.
+Videos are never overwritten: every attempt gets a new numbered name.
+The bench tools are documented in `local_storage/hb_dev/rl_policy/bench/README.md`.

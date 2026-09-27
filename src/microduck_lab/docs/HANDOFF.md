@@ -2,26 +2,26 @@
 
 Written 2026-08-28. Everything below is verified working, not planned.
 
-## Human bridge + sideways walking — latest, 2026-09-26
+## Human bridge — latest, 2026-09-27
 
 Full write-up: [docs/tasks/human_bridge.md](tasks/human_bridge.md). Short version:
 
-- **Goal:** one duck lies across a gap; the other walks across his back.
-- **Works:** he lies down as a bridge and holds her weight (<= 5.5 mm sag).
-- **Not solved:** she has never WALKED across. Best RL run (`bridge-v11b`)
-  steps onto his legs and falls. The scripted agents' `scripted_try96` looked
-  like a success but she tipped over onto him and fell across.
-- **Now enforced:** `tasks/human_bridge/story.py` fails a crossing unless her
-  trunk stays within ~25 deg and only her soles touch him or the ledges.
-- **Big bug fixed:** `bake.py` scrambled his frozen body for RL training
-  (v1-v8). Fixed and tested.
-- **New skill:** `Mjlab-Velocity-Sideways-MicroDuck`. v4 really steps sideways
-  (10-20 mm foot lift) but still turns 20-80 deg per 6 s.
-- **Nothing is training now.** Dev helpers: `local_storage/hb_dev/rl_policy/from_first_chat/`.
+- **Goal:** one duck lies across a gap; the other WALKS across his back.
+- **Works in simulation, not every time:** the narrow-beam sideways walker
+  (`Mjlab-Velocity-SidewaysBeam-MicroDuck`, `rl/rl_policy/`, checkpoint 2000)
+  crosses the real brother 2 of 3 times from the normal start, under the strict
+  rules in `tasks/human_bridge/rl_policy/story.py` (`Judge`).
+- **Failures:** always at an edge; her tilted foot's ankle bracket clips a ledge
+  corner. Next: a v2 run with more full-difficulty practice on his back.
+- **Folders by policy:** `rl_policy` (this work), `scripted_policy`,
+  `crawl_policy`, each under `tasks/human_bridge/`, `rl/`, `local_storage/hb_dev/`
+  and `videos/human_bridge/`. Each policy uses only its own folders.
+- **Bugs fixed:** collision bits set after compile (thighs and neck never
+  collided); the bake scrambled his frozen body (RL runs v1-v8).
+- **Sim only:** trained with the story's motor model (no motor delay).
+- **Nothing is training now.** Blog: https://rezakakooee.github.io/microduck-human-bridge/
 - **User rules for videos:** render a clip for every attempt, failures too;
   never overwrite; new numbered names.
-- **Next ideas:** wider gap (so falling across is impossible), strict checks as
-  the RL termination, a plank-to-brother curriculum.
 
 ## Active board play — latest behavior, 2026-09-05
 
