@@ -273,3 +273,22 @@ def test_independent_lift_changes_only_selected_leg_targets(world, foot):
 def test_independent_lift_requires_sequence_planning():
     with pytest.raises(ValueError, match='Independent lifts require'):
         Settings(preview_independent_lift=True)
+
+
+def test_validation_detects_changed_landing_checks(tmp_path):
+    import json
+    from microduck_lab.tasks.human_bridge.scripted_policy.validation import summarize
+    source_names = ('run.py', 'controller.py', 'preview.py', 'sequence.py',
+                    'predict_workers.py', 'metrics.py', 'runtime.py', 'gait.py', 'surface.py')
+    result = dict(settings={}, success=True, failure=None, dx=0., dy=0.,
+                  min_up=1., min_z=.44, max_he_up=.01, end={},
+                  source_sha256=dict.fromkeys(source_names, 'same'),
+                  policy_sha256='policy', input_sha256={'world.py': 'world'})
+    paths = [tmp_path / 'first.json', tmp_path / 'second.json']
+    for path in paths:
+        path.write_text(json.dumps(result))
+        np.savez(path.with_suffix('.npz'), trace=clear_trace())
+    assert summarize(paths)['same_controller']
+    result['source_sha256']['run.py'] = 'changed-landing-checks'
+    paths[1].write_text(json.dumps(result))
+    assert not summarize(paths)['same_controller']

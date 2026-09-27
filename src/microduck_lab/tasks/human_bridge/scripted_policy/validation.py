@@ -14,7 +14,8 @@ def summarize(paths):
             raise ValueError(f'{path}: incomplete trial; exclude it from the completed validation')
         settings.append(result['settings'])
         sources.append(result.get('input_sha256'))
-        names = ('controller.py', 'preview.py', 'sequence.py', 'predict_workers.py', 'metrics.py')
+        names = ('run.py', 'controller.py', 'preview.py', 'sequence.py',
+                 'predict_workers.py', 'metrics.py', 'runtime.py', 'gait.py', 'surface.py')
         controllers.append({name: result.get('source_sha256', {}).get(name) for name in names})
         policies.append(result.get('policy_sha256'))
         with np.load(path.with_suffix('.npz')) as data:

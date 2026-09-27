@@ -1,0 +1,157 @@
+{
+  "trials": [
+    {
+      "trial": "scripted_try19",
+      "dx": 0.0,
+      "dy": 0.0,
+      "success": true,
+      "failure": null,
+      "min_up": 0.6303943682421866,
+      "min_z": 0.37791914471750443,
+      "max_he_up": 0.021352436328073123,
+      "end": {
+        "time": 16.87999999999973,
+        "pos": [
+          0.544250823929953,
+          0.0011354371686954242,
+          0.4387402679360955
+        ],
+        "up": 0.9972090358506263,
+        "he_up": -0.0061095491995125555,
+        "rearmost": 0.43309942124541967
+      },
+      "task_audit": {
+        "task_limits": true,
+        "final_clearance_seconds": 5.479999999999883
+      },
+      "video": "/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/scripted_try19.mp4",
+      "prediction_error": 0.0,
+      "nonfoot_support_seconds": 2.5999999999999446,
+      "final_3s_max_nonfoot_force": 0.0
+    },
+    {
+      "trial": "scripted_try21",
+      "dx": -0.02,
+      "dy": -0.01,
+      "success": true,
+      "failure": null,
+      "min_up": 0.976567532991077,
+      "min_z": 0.43319263633508914,
+      "max_he_up": 0.02607639216463455,
+      "end": {
+        "time": 14.099999999999788,
+        "pos": [
+          0.5491009772950877,
+          -0.0002057842823096971,
+          0.4408872427756609
+        ],
+        "up": 0.9997754395283809,
+        "he_up": -0.010020491367484573,
+        "rearmost": 0.4409660566166669
+      },
+      "task_audit": {
+        "task_limits": true,
+        "final_clearance_seconds": 3.2999999999999297
+      },
+      "video": "/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/scripted_try21.mp4",
+      "prediction_error": 0.0,
+      "nonfoot_support_seconds": 0.0,
+      "final_3s_max_nonfoot_force": 0.0
+    },
+    {
+      "trial": "scripted_try23",
+      "dx": -0.02,
+      "dy": 0.01,
+      "success": true,
+      "failure": null,
+      "min_up": 0.6884520617465754,
+      "min_z": 0.38933708605436146,
+      "max_he_up": 0.028826658042700078,
+      "end": {
+        "time": 14.719999999999775,
+        "pos": [
+          0.549810527421427,
+          -0.0014623984119327353,
+          0.4427512684096373
+        ],
+        "up": 0.9979036080989179,
+        "he_up": -0.005865940768567058,
+        "rearmost": 0.4392463369464884
+      },
+      "task_audit": {
+        "task_limits": true,
+        "final_clearance_seconds": 5.599999999999881
+      },
+      "video": "/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/scripted_try23.mp4",
+      "prediction_error": 0.0,
+      "nonfoot_support_seconds": 2.0999999999999552,
+      "final_3s_max_nonfoot_force": 0.0
+    },
+    {
+      "trial": "scripted_try22",
+      "dx": 0.02,
+      "dy": -0.01,
+      "success": true,
+      "failure": null,
+      "min_up": 0.9884909494927843,
+      "min_z": 0.4355073518258375,
+      "max_he_up": 0.03767666841413983,
+      "end": {
+        "time": 11.579999999999842,
+        "pos": [
+          0.551738481846084,
+          0.000435729584758637,
+          0.44042790037858726
+        ],
+        "up": 0.9994863739296453,
+        "he_up": -0.006822217239986124,
+        "rearmost": 0.43738584985488427
+      },
+      "task_audit": {
+        "task_limits": true,
+        "final_clearance_seconds": 3.3199999999999292
+      },
+      "video": "/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/scripted_try22.mp4",
+      "prediction_error": 0.0,
+      "nonfoot_support_seconds": 0.0,
+      "final_3s_max_nonfoot_force": 0.0
+    },
+    {
+      "trial": "scripted_try24",
+      "dx": 0.02,
+      "dy": 0.01,
+      "success": true,
+      "failure": null,
+      "min_up": 0.624117159577818,
+      "min_z": 0.38279244999735823,
+      "max_he_up": 0.020671282435365517,
+      "end": {
+        "time": 17.419999999999717,
+        "pos": [
+          0.5481810426853814,
+          -0.0005152471299433321,
+          0.4424943854022738
+        ],
+        "up": 0.9987919179053821,
+        "he_up": -0.005866129447831495,
+        "rearmost": 0.43844435137895316
+      },
+      "task_audit": {
+        "task_limits": true,
+        "final_clearance_seconds": 5.739999999999878
+      },
+      "video": "/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/scripted_try24.mp4",
+      "prediction_error": 0.0,
+      "nonfoot_support_seconds": 2.3199999999999505,
+      "final_3s_max_nonfoot_force": 0.0
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "five_starts_complete": true,
+  "same_settings": true,
+  "same_controller": true,
+  "same_policy": true,
+  "input_hashes_complete": true,
+  "known_input_hashes_match": true
+}

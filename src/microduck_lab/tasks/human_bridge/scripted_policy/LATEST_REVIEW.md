@@ -1,28 +1,56 @@
-# Latest five-start review
+# Scripted controller review — 2026-09-27
 
-These trials used one fixed controller and the newer scene now copied into Codex.
-Two numerical passes, one fall, and two runs interrupted by the batch wall limit.
-This is not a completed five-start success-rate estimate.
+**5/5 requested starts passed the crossing and final landing checks.** All
+five used identical controller code, settings, gait policy and scene inputs.
+The final three seconds in each run were upright and had no measured body
+support. See [full measurements and all five videos](VALIDATION.md).
 
-| Trial | Start x/y offset (mm) | Result | Min up | Body support >1 N (s) |
-|---|---:|---|---:|---:|
-| [111](/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/previous/scripted_try111.mp4) | 0/0 | Passed; upright, no measured body support | 0.988 | 0.00 |
-| [112](/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/previous/scripted_try112.mp4) | -20/-10 | Incomplete; near far edge at 13 s | 0.800 | 1.52 |
-| [113](/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/previous/scripted_try113.mp4) | -20/10 | Incomplete; near far edge at 14 s | 0.714 | 2.90 |
-| [114](/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/previous/scripted_try114.mp4) | 20/10 | Fell at 7.90 s | 0.497 | 0.00 |
-| [115](/mnt/nas05/clusterdata01/home2/reza/microduck_rl/local_storage/videos/human_bridge/scripted_policy/previous/scripted_try115.mp4) | 20/-10 | Numerical pass; collapsed on far ledge | 0.679 | 1.40 |
+The landing fix keeps predictive control active after crossing. Previously,
+the nominal run drifted off the platform after switching to the standing policy.
+The before/after traces match exactly through that switch at 13.86 s. With
+predictive control retained, it finishes near x=0.544 m, y=0.001 m instead.
+No geometry, physics limits, or live robot states were changed for this fix.
 
-Trial 111 stayed above up = 0.988 and trunk z = 0.4318 m. It ended fully beyond
-the far edge for 3.02 s, at up = 0.999. The contact sheet shows an upright crossing.
-Trial 115 had 1.40 s of body support and visibly collapsed during landing.
+`sequence_validation.json`, the default CLI configuration, now matches the
+validated candidate in `predictive_landing_validation.json`. The earlier
+shared-foot-lift default is preserved in `shared_lift_validation.json`.
 
-Next: supply the required gait file at
-`local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx`.
-Expected SHA-256:
+## What the videos actually show
+
+- [Trial 21, -20/-10 mm](../../../../../videos/human_bridge/scripted_policy/scripted_try21.mp4):
+  upright crossing with no measured body support; minimum up 0.977. No side-ledge
+  contact was found in saved poses. This is the clearest reference video.
+- [Trial 22, +20/-10 mm](../../../../../videos/human_bridge/scripted_policy/scripted_try22.mp4):
+  upright crossing with no measured body support; minimum up 0.988. A brief foot
+  contact with the far side ledge appears in one saved pose.
+- [Trial 19, nominal](../../../../../videos/human_bridge/scripted_policy/scripted_try19.mp4),
+  [trial 23, -20/+10 mm](../../../../../videos/human_bridge/scripted_policy/scripted_try23.mp4),
+  and [trial 24, +20/+10 mm](../../../../../videos/human_bridge/scripted_policy/scripted_try24.mp4)
+  scramble before recovering. Body support lasts 2.60, 2.10 and 2.32 s.
+  These are numerical successes, not clean uninterrupted walking.
+
+Side-ledge contacts appear in six saved poses of trial 19 and one of trial 23;
+none were found for trial 24. Contact inspection uses saved geometry at 25 Hz,
+not every physics step, so it cannot exclude contacts between samples. Details:
+`local_storage/hb_dev/scripted_policy/predictive_landing_contacts.json`.
+
+## Verification and limits
+
+35 CPU tests pass. The validation comparison now checks `run.py`, so different
+landing rules cannot be reported as the same controller. All five physical runs
+record zero maximum next-step qpos prediction error. Source hashes, settings,
+policy hashes, traces and source ZIPs are saved beside each numbered video.
+Videos were rendered on GPU nodes; all jobs have completed.
+
+The five requested offsets were each tested once with this fixed configuration.
+This does not establish general robustness, clean walking from every start,
+real-time execution, or hardware transfer. The next behavioral improvement is
+to remove the three scrambles and the incidental side-ledge contacts.
+
+The previous controller passed 4/5 starts; its results remain in
+`INDEPENDENT_LIFT_VALIDATION.md`. A separate, slower standing-handoff alternative
+also passed the nominal start in trial 20, but was not selected as the default
+because the retained-prediction configuration has a complete five-start test.
+
+Gait input SHA-256:
 `c48a46402c448494fa0bb79f7982c4aa7adf8c499ddf5be2f3d5187aee32bb51`.
-Then rerun starts 1 and 2 separately to finish the interrupted tests, and investigate
-the fall at start 4. Keep the current settings until the complete baseline is measured.
-Record an upright landing without body support separately from the original numerical checks.
-
-No new physical trial was run during this review because the policy file is missing.
-The updated input guard and existing controller checks pass: 24 tests.

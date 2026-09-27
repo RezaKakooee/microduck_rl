@@ -1,5 +1,18 @@
-Latest review: [trial 111 crosses upright; shifted starts remain unresolved](LATEST_REVIEW.md).
-The current test suite has 24 passing checks. The default gait file is available; the two interrupted starts are being rerun.
+Latest review: [five-start result and video limitations](LATEST_REVIEW.md).
+The current default passes all five requested starts in simulation and all
+35 CPU tests. Keeping predictive control active during landing fixed the nominal
+run's drift off the platform. Two starts cross upright; three scramble before
+recovering. See [all measurements and videos](VALIDATION.md).
+
+[Clearest crossing: trial 21](../../../../../videos/human_bridge/scripted_policy/scripted_try21.mp4).
+The default `sequence_validation.json` matches `predictive_landing_validation.json`.
+The former default is preserved in `shared_lift_validation.json`.
+
+Run one filmed nominal trial on an available GPU partition with:
+
+```bash
+sbatch -M cluster --partition=h200 --time=00:30:00 local_storage/hb_dev/scripted_policy/video.sbatch -m microduck_lab.tasks.human_bridge.scripted_policy.run --seconds 22
+```
 
 Current input status: `sideways_v1_iter250.onnx` is now available in
 `local_storage/hb_dev/scripted_policy/policies/`. The user supplied its source path,
@@ -16,17 +29,19 @@ copied camera, judging and observation helpers, without the other controller.
 `baked_surface.py` reads only that local pose for optional bridge observations.
 `protected_sources.json` records hashes of our own code and pose.
 
-Run the filmed bake and six-second regression trial with:
+The original isolation check was run with:
 
 ```bash
 sbatch -M cluster local_storage/hb_dev/scripted_policy/isolation.sbatch
 ```
 
-The short trial compares its entire trace against the first six seconds of
+That historical short trial compared its entire trace against the first six seconds of
 saved trial 111. Its expected time limit is not a full-crossing success.
-Results are in `ISOLATION_CHECK.json`. Videos and logs stay in Codex folders.
+Results are in `ISOLATION_CHECK.json`. Subsequent controller tuning changes behavior,
+so this historical result is not a regression guarantee for the current controller.
+Videos and logs stay in `scripted_policy` folders.
 
-Verified: 22 tests passed. The six-second trial matched saved trial 111
+At the original isolation check, 22 tests passed. The six-second trial matched saved trial 111
 exactly (maximum trace difference 0.0). It ended at the requested time limit;
 a full crossing was not tested. The local bake wrote 39 body geoms.
 The videos are `videos/human_bridge/scripted_policy/bake_try1.mp4` and
@@ -48,7 +63,7 @@ x = 0.4481 m. Minimum up was 0.7935 and minimum z was 0.3886 m.
 His maximum absolute up during crossing was 0.0852.
 She used non-foot support for 0.68 s, then ended on her feet. This is a
 scramble with a recovery, not careful uninterrupted sideways walking.
-The five-start validation in `sequence_validation.json` is pending.
+That historical five-start test has been superseded by `INDEPENDENT_LIFT_VALIDATION.md`.
 
 The shared input files changed outside this controller during the session.
 In particular, the far shelf changed from 0.282 m to 0.256 m, and the world
