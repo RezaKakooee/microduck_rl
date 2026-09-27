@@ -44,7 +44,7 @@ class Layout:
     step_z: float = 0.300        # top of the near step, where he stands
     gap_start: float = 0.000     # the near step ends here; the drop starts
     gap_end: float = 0.100       # the far shelf starts here
-    shelf_len: float = 0.150     # far shelf length, under his head
+    shelf_len: float = 0.100     # far shelf length, under his head (reduced so Sister's legs don't stick)
     step_len: float = 0.052      # near step length, under his feet (reduced so Sister's legs don't stick in the gap)
     half_width: float = 0.35     # how far the set runs to each side (y)
     shelf_rise: float = -0.001   # far shelf height trim; -0.001 gives shelf_z 0.256

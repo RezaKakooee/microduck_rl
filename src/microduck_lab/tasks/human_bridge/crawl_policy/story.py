@@ -136,7 +136,7 @@ class Story:
         if abs(she.pos()[1]) > 0.18:
             raise RuntimeError(f"she drifted off bridge sideways: y={she.pos()[1]:.3f} m")
         # Dropped into gap
-        if self.phase in ("cross", "across") and she.pos()[2] < DROP_Z - 0.05:
+        if self.phase in ("cross", "across") and she.pos()[2] < L.shelf_z - 0.05:
             raise RuntimeError(f"she dropped into gap at x={she.pos()[0]:.3f}, z={she.pos()[2]:.3f} m")
         # Brother must remain stable
         if self.phase in ("cross", "across") and abs(he.up()) > 0.35:
