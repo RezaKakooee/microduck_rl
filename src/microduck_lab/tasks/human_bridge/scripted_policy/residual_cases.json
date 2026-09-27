@@ -1,0 +1,50 @@
+[
+  {
+    "mode": "preview",
+    "preview_residual": true,
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.14,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "preview_horizon": 0.4,
+    "preview_progress": 10,
+    "preview_interval": 0.06,
+    "preview_samples": 40
+  },
+  {
+    "mode": "preview",
+    "preview_residual": true,
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.14,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "preview_horizon": 0.6,
+    "preview_progress": 10,
+    "preview_interval": 0.06,
+    "preview_samples": 40
+  },
+  {
+    "mode": "preview",
+    "preview_residual": true,
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.14,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "preview_horizon": 0.4,
+    "preview_progress": 25,
+    "preview_interval": 0.06,
+    "preview_samples": 40
+  },
+  {
+    "mode": "preview",
+    "preview_residual": true,
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.14,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "preview_horizon": 0.8,
+    "preview_progress": 25,
+    "preview_interval": 0.06,
+    "preview_samples": 40
+  }
+]

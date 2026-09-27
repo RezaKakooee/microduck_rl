@@ -1,0 +1,83 @@
+[
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.08,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.08,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.08,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 3.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 3.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.18,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.18,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.18,
+    "lateral_gain": 6.0,
+    "lateral_damping": 0.4,
+    "heading_gain": 4.0,
+    "yaw_damping": 0.1,
+    "lift": 3.0
+  }
+]

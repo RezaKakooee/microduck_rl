@@ -27,7 +27,7 @@ LOW = np.array([-.90, .35, -.70, -.80, -.80,
                 -1.56, -1.55, -.70, -.80, -.80, .18, .18])
 HIGH = np.array([.30, 1.55, .70, .30, .30,
                  -.70, -.30, .70, .30, .30, .90, 1.10])
-PARAMS = paths.REPO / 'crawl_baby_gait.npy'
+PARAMS = paths.REPO / 'local_storage' / 'gaits' / 'crawl_baby_gait.npy'
 
 
 def gait(c, p, t):

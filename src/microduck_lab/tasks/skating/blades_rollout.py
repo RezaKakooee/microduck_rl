@@ -10,7 +10,7 @@ radius along the push direction; "bbox": the ellipse's bounding box). This
 script does the same, so a policy sees the physics it trained on. `--static`
 keeps the XML's pair values instead (a blade only while the duck faces +X).
 
-    uv run python -m microduck_lab.tasks.skating.blades_rollout --walking blades_v1.onnx \
+    uv run python -m microduck_lab.tasks.skating.blades_rollout --walking local_storage/policies/blades_v1.onnx \
         --mu-along 0.08 --mu-across 1.0 --lin-vel-x 0.3 --seconds 15
 """
 

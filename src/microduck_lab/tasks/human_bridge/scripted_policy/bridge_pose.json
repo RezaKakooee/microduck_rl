@@ -1,0 +1,998 @@
+{
+ "layout": {
+  "step_z": 0.3,
+  "gap_start": 0.0,
+  "gap_end": 0.1,
+  "shelf_len": 0.15,
+  "step_len": 0.076,
+  "half_width": 0.35,
+  "shelf_rise": -0.001,
+  "notch_near": 0.085,
+  "notch_far": 0.1,
+  "drop": 0.0
+ },
+ "settle_s": 8.0,
+ "trunk": [
+  0.06671,
+  0.00019,
+  0.29242
+ ],
+ "up": -0.011,
+ "geoms": [
+  {
+   "mesh": "right_shell",
+   "file": "src/mjlab_microduck/robot/microduck/assets/right_shell.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.049176,
+    -0.000471,
+    0.288612
+   ],
+   "quat": [
+    0.495047,
+    0.500256,
+    0.505218,
+    0.499428
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "trunk_base",
+   "file": "src/mjlab_microduck/robot/microduck/assets/trunk_base.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.049171,
+    2.9e-05,
+    0.288612
+   ],
+   "quat": [
+    0.495047,
+    0.500256,
+    0.505218,
+    0.499428
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.077983,
+    0.017798,
+    0.286284
+   ],
+   "quat": [
+    0.00029,
+    0.999974,
+    0.004671,
+    -0.0055
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "power_support",
+   "file": "src/mjlab_microduck/robot/microduck/assets/power_support.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.04915,
+    2.9e-05,
+    0.288612
+   ],
+   "quat": [
+    0.495047,
+    0.500256,
+    0.505218,
+    0.499428
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "np_f970",
+   "file": "src/mjlab_microduck/robot/microduck/assets/np_f970.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.063259,
+    0.000181,
+    0.328429
+   ],
+   "quat": [
+    0.509557,
+    0.495,
+    -0.490662,
+    -0.504557
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.07831,
+    -0.017201,
+    0.286302
+   ],
+   "quat": [
+    0.00029,
+    0.999974,
+    0.004671,
+    -0.0055
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "left_shell",
+   "file": "src/mjlab_microduck/robot/microduck/assets/left_shell.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.049093,
+    2.8e-05,
+    0.288613
+   ],
+   "quat": [
+    0.495047,
+    0.500256,
+    0.505218,
+    0.499428
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.048986,
+    0.017527,
+    0.286603
+   ],
+   "quat": [
+    -0.003949,
+    0.710981,
+    0.002648,
+    0.703195
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "hip_l",
+   "file": "src/mjlab_microduck/robot/microduck/assets/hip_l.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.055616,
+    0.001319,
+    0.288501
+   ],
+   "quat": [
+    0.390858,
+    0.398031,
+    0.588502,
+    0.585206
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "upper_leg_left",
+   "file": "src/mjlab_microduck/robot/microduck/assets/upper_leg_left.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.055616,
+    0.001319,
+    0.288501
+   ],
+   "quat": [
+    0.557837,
+    0.004108,
+    0.000897,
+    0.82994
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.014757,
+    0.043828,
+    0.32473
+   ],
+   "quat": [
+    0.397355,
+    -0.391546,
+    -0.586222,
+    0.58749
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "upper_leg_rigidity_plate",
+   "file": "src/mjlab_microduck/robot/microduck/assets/upper_leg_rigidity_plate.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.055616,
+    0.001319,
+    0.288501
+   ],
+   "quat": [
+    0.557837,
+    0.004108,
+    0.000897,
+    0.82994
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.034848,
+    0.052246,
+    0.288821
+   ],
+   "quat": [
+    -0.004108,
+    0.557837,
+    0.82994,
+    -0.000897
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "leg",
+   "file": "src/mjlab_microduck/robot/microduck/assets/leg.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.002188,
+    -0.020558,
+    0.302696
+   ],
+   "quat": [
+    0.391174,
+    0.397721,
+    0.588038,
+    0.585673
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    -0.022244,
+    0.023337,
+    0.325035
+   ],
+   "quat": [
+    0.588038,
+    0.585673,
+    -0.391174,
+    -0.397721
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "sole_left",
+   "file": "src/mjlab_microduck/robot/microduck/assets/sole_left.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.017141,
+    -0.014853,
+    0.330793
+   ],
+   "quat": [
+    0.557833,
+    0.004603,
+    0.001633,
+    0.829939
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "foot_left",
+   "file": "src/mjlab_microduck/robot/microduck/assets/foot_left.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.017141,
+    -0.014853,
+    0.330793
+   ],
+   "quat": [
+    0.557833,
+    0.004603,
+    0.001633,
+    0.829939
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "ankle_left",
+   "file": "src/mjlab_microduck/robot/microduck/assets/ankle_left.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.017141,
+    -0.014853,
+    0.330793
+   ],
+   "quat": [
+    0.557833,
+    0.004603,
+    0.001633,
+    0.829939
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "neck",
+   "file": "src/mjlab_microduck/robot/microduck/assets/neck.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.049007,
+    -0.013474,
+    0.288145
+   ],
+   "quat": [
+    0.497424,
+    0.497892,
+    0.502833,
+    0.501828
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.098846,
+    0.000481,
+    0.266064
+   ],
+   "quat": [
+    0.502833,
+    0.501828,
+    -0.497424,
+    -0.497892
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.148844,
+    0.000948,
+    0.26599
+   ],
+   "quat": [
+    0.501828,
+    -0.502833,
+    0.497892,
+    -0.497424
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "neck",
+   "file": "src/mjlab_microduck/robot/microduck/assets/neck.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.048773,
+    0.011525,
+    0.288132
+   ],
+   "quat": [
+    0.497424,
+    0.497892,
+    0.502833,
+    0.501828
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.160771,
+    0.001076,
+    0.296966
+   ],
+   "quat": [
+    0.585141,
+    -0.580753,
+    -0.403355,
+    -0.39704
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.161665,
+    0.026587,
+    0.299733
+   ],
+   "quat": [
+    0.586085,
+    0.402405,
+    -0.39799,
+    -0.579809
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "top_head_shell",
+   "file": "src/mjlab_microduck/robot/microduck/assets/top_head_shell.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.159247,
+    0.00106,
+    0.292731
+   ],
+   "quat": [
+    0.691408,
+    0.128566,
+    0.129881,
+    0.698968
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.130537,
+    0.000747,
+    0.308609
+   ],
+   "quat": [
+    -0.133003,
+    0.125444,
+    0.695846,
+    0.69453
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "bottom_head_shell",
+   "file": "src/mjlab_microduck/robot/microduck/assets/bottom_head_shell.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.159319,
+    0.001061,
+    0.292918
+   ],
+   "quat": [
+    0.691408,
+    0.128566,
+    0.129881,
+    0.698968
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "jaw",
+   "file": "src/mjlab_microduck/robot/microduck/assets/jaw.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.159247,
+    0.00106,
+    0.292731
+   ],
+   "quat": [
+    0.691408,
+    0.128566,
+    0.129881,
+    0.698968
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.049313,
+    -0.017472,
+    0.286622
+   ],
+   "quat": [
+    -0.002463,
+    0.710974,
+    0.00415,
+    0.703202
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "hip_l",
+   "file": "src/mjlab_microduck/robot/microduck/assets/hip_l.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.055661,
+    -0.001151,
+    0.288512
+   ],
+   "quat": [
+    -0.40321,
+    -0.395831,
+    0.581928,
+    0.584892
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.015547,
+    -0.044346,
+    0.324762
+   ],
+   "quat": [
+    -0.402536,
+    -0.396516,
+    0.582923,
+    0.583901
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "upper_leg_rigidity_plate",
+   "file": "src/mjlab_microduck/robot/microduck/assets/upper_leg_rigidity_plate.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.024574,
+    -0.081333,
+    0.289049
+   ],
+   "quat": [
+    0.825069,
+    0.000692,
+    0.004257,
+    0.565015
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "upper_leg_right",
+   "file": "src/mjlab_microduck/robot/microduck/assets/upper_leg_right.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.055661,
+    -0.001151,
+    0.288512
+   ],
+   "quat": [
+    0.825069,
+    0.000692,
+    0.004257,
+    0.565015
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.03578,
+    -0.05243,
+    0.288855
+   ],
+   "quat": [
+    -0.004257,
+    -0.565015,
+    0.825069,
+    0.000692
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "xl330",
+   "file": "src/mjlab_microduck/robot/microduck/assets/xl330.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    -0.021803,
+    -0.0245,
+    0.325089
+   ],
+   "quat": [
+    0.584648,
+    -0.582174,
+    -0.396,
+    0.403044
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "leg",
+   "file": "src/mjlab_microduck/robot/microduck/assets/leg.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.002297,
+    0.019929,
+    0.346722
+   ],
+   "quat": [
+    0.396,
+    -0.403044,
+    0.584648,
+    -0.582174
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "ankle_right",
+   "file": "src/mjlab_microduck/robot/microduck/assets/ankle_right.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.016917,
+    0.014368,
+    0.330813
+   ],
+   "quat": [
+    0.825068,
+    0.001707,
+    0.004952,
+    0.56501
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "sole_right",
+   "file": "src/mjlab_microduck/robot/microduck/assets/sole_right.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.016917,
+    0.014368,
+    0.330813
+   ],
+   "quat": [
+    0.825068,
+    0.001707,
+    0.004952,
+    0.56501
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  },
+  {
+   "mesh": "foot_right",
+   "file": "src/mjlab_microduck/robot/microduck/assets/foot_right.stl",
+   "scale": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pos": [
+    0.016917,
+    0.014368,
+    0.330813
+   ],
+   "quat": [
+    0.825068,
+    0.001707,
+    0.004952,
+    0.56501
+   ],
+   "friction": [
+    1.0,
+    0.005,
+    0.0001
+   ]
+  }
+ ]
+}

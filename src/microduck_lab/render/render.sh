@@ -115,11 +115,11 @@ ice)
   echo "### A baseline: the WALKING policy on ice"
   $RI --walking "$P/alpha_walking.onnx" --foot-friction 0.08 --lin-vel-x 0.3 --seconds 12 --video "$D/ice_a_walker_fails.mp4" 2>/dev/null | grep -E "body speed|fell:"
   echo "### B the ice policy skating (mu 0.12)"
-  $RI --walking ice_v2_iter4000.onnx --foot-friction 0.12 --lin-vel-x 0.3 --seconds 18 --video "$D/ice_b_skating.mp4" 2>/dev/null | grep -E "body speed|fell:"
+  $RI --walking local_storage/policies/ice_v2_iter4000.onnx --foot-friction 0.12 --lin-vel-x 0.3 --seconds 18 --video "$D/ice_b_skating.mp4" 2>/dev/null | grep -E "body speed|fell:"
   echo "### C same policy on much slicker ice (mu 0.05)"
-  $RI --walking ice_v2_iter4000.onnx --foot-friction 0.05 --lin-vel-x 0.3 --seconds 18 --video "$D/ice_c_slicker.mp4" 2>/dev/null | grep -E "body speed|fell:"
+  $RI --walking local_storage/policies/ice_v2_iter4000.onnx --foot-friction 0.05 --lin-vel-x 0.3 --seconds 18 --video "$D/ice_c_slicker.mp4" 2>/dev/null | grep -E "body speed|fell:"
   echo "### D the collapsed final policy -- stands still"
-  $RI --walking ice_v2_iter7999.onnx --foot-friction 0.12 --lin-vel-x 0.3 --seconds 12 --video "$D/ice_d_collapsed.mp4" 2>/dev/null | grep -E "body speed|fell:" ;;
+  $RI --walking local_storage/policies/ice_v2_iter7999.onnx --foot-friction 0.12 --lin-vel-x 0.3 --seconds 12 --video "$D/ice_d_collapsed.mp4" 2>/dev/null | grep -E "body speed|fell:" ;;
 
 pickup)
   D=$(out pick_up)

@@ -1,0 +1,98 @@
+[
+  {
+    "mode": "gait",
+    "step_time": 0.16,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.16,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 1.5
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.16,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.16,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 1.5
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.22,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.22,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 1.5
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.22,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.22,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 1.5
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.3,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.3,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.005,
+    "joint_integral": 1.5
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.3,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 0.0
+  },
+  {
+    "mode": "gait",
+    "step_time": 0.3,
+    "stride": 0.025,
+    "step_height": 0.025,
+    "sway": 0.015,
+    "joint_integral": 1.5
+  }
+]

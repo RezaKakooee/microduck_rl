@@ -61,7 +61,7 @@ ROBOT_VARIANT = paths.model("robot_allcollisions_boardfeet.xml")
 FOOT_FLAT_TOL = 0.001      # sole-hull vertices this close to the bottom form the flat patch
 FOOT_BOX_HALF_H = 0.003    # half-height of the generated foot box
 # make_policy needs some 61->14 ONNX to build PolicyInference; it is never run.
-ANY_ONNX = os.path.join(duck_sim.REPO, "spiral_v5.onnx")
+ANY_ONNX = os.path.join(duck_sim.REPO, "local_storage", "policies", "spiral_v5.onnx")
 
 # ---- board geometry (defaults; the CLI can override radius / length / thickness)
 CYL_RADIUS = 0.030      # m

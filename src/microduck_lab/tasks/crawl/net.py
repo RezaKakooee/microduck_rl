@@ -91,7 +91,7 @@ class NetCrawl(crawl.Crawl):
 def evaluate(kind,video=None,report=None,trace=None):
     gait,param_file,seconds,label=GAITS[kind]
     steps=round(seconds/crawl.DT)
-    p=np.load(paths.REPO/param_file)
+    p=np.load(paths.REPO/'local_storage'/'gaits'/param_file)
     c=NetCrawl();m,d=c.model,c.data
     writer=renderer=None
     entered_at=cleared_at=None

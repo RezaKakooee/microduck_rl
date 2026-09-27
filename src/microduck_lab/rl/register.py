@@ -1,4 +1,4 @@
-"""Registers our five RL tasks with mjlab.
+"""Registers our eight RL tasks with mjlab.
 
 These registrations used to sit in upstream `mjlab_microduck/tasks/__init__.py`
 as 71 lines of ours in the middle of theirs. Every upstream merge had to be
@@ -16,6 +16,9 @@ half-built, so its class does not exist yet. This registers:
     Mjlab-Velocity-Ice-MicroDuck        velocity tracking with almost no grip
     Mjlab-Velocity-Slopes-MicroDuck     5-15 deg slopes and 10-20 mm stairs
     Mjlab-Velocity-Blades-MicroDuck     anisotropic skate-blade contact pairs
+    Mjlab-Velocity-Sideways-MicroDuck   walking recipe that really steps sideways
+    Mjlab-Bridge-Sideways-MicroDuck     step sideways across a brother lying over a gap
+    Mjlab-Velocity-SidewaysBeam-MicroDuck  step sideways along narrow beams with height changes
 """
 
 from __future__ import annotations
@@ -42,9 +45,21 @@ from microduck_lab.rl.microduck_velocity_blades_env_cfg import (
     make_microduck_velocity_blades_env_cfg,
     MicroduckBladesRlCfg,
 )
+from microduck_lab.rl.microduck_bridge_sideways_env_cfg import (
+    make_microduck_bridge_sideways_env_cfg,
+    MicroduckBridgeSidewaysRlCfg,
+)
+from microduck_lab.rl.microduck_velocity_sideways_env_cfg import (
+    make_microduck_velocity_sideways_env_cfg,
+    MicroduckSidewaysRlCfg,
+)
+from microduck_lab.rl.rl_policy.microduck_velocity_sideways_beam_env_cfg import (
+    make_microduck_velocity_sideways_beam_env_cfg,
+    MicroduckSidewaysBeamRlCfg,
+)
 
 def register_all(runner_cls) -> None:
-    """Register our five tasks. Called once, from `mjlab_microduck.tasks`."""
+    """Register our eight tasks. Called once, from `mjlab_microduck.tasks`."""
     # Arabesque — stand on one leg, other leg extended behind (normal feet).
     register_mjlab_task(
         task_id="Mjlab-Arabesque-Flat-MicroDuck",
@@ -91,5 +106,37 @@ def register_all(runner_cls) -> None:
         env_cfg=make_microduck_velocity_blades_env_cfg(),
         play_env_cfg=make_microduck_velocity_blades_env_cfg(play=True),
         rl_cfg=MicroduckBladesRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Sideways — the walking recipe with a pure-sideways command bucket, tight
+    # vy / yaw-rate tracking, hip roll freed while walking, and the symmetry
+    # mirror loss on (see microduck_velocity_sideways_env_cfg.py).
+    register_mjlab_task(
+        task_id="Mjlab-Velocity-Sideways-MicroDuck",
+        env_cfg=make_microduck_velocity_sideways_env_cfg(),
+        play_env_cfg=make_microduck_velocity_sideways_env_cfg(play=True),
+        rl_cfg=MicroduckSidewaysRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Bridge — the human-bridge scene as an RL task: she steps sideways across
+    # her brother's baked lying body (microduck_bridge_sideways_env_cfg.py).
+    register_mjlab_task(
+        task_id="Mjlab-Bridge-Sideways-MicroDuck",
+        env_cfg=make_microduck_bridge_sideways_env_cfg(),
+        play_env_cfg=make_microduck_bridge_sideways_env_cfg(play=True),
+        rl_cfg=MicroduckBridgeSidewaysRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Sideways beam — the sideways walker on narrow beams (150 -> 28 mm) with
+    # steps, ramps, gaps and bumps, steered by the deployment steering law
+    # (microduck_velocity_sideways_beam_env_cfg.py).
+    register_mjlab_task(
+        task_id="Mjlab-Velocity-SidewaysBeam-MicroDuck",
+        env_cfg=make_microduck_velocity_sideways_beam_env_cfg(),
+        play_env_cfg=make_microduck_velocity_sideways_beam_env_cfg(play=True),
+        rl_cfg=MicroduckSidewaysBeamRlCfg,
         runner_cls=runner_cls,
     )

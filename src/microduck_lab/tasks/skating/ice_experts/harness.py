@@ -103,7 +103,7 @@ def make(ice_mu=0.1, speed=0.4, free="left", hip_roll_shift=HIP_ROLL_LIMIT, pose
     with contextlib.redirect_stdout(buf):
         policy, adr = duck_sim.make_policy(
             model, data,
-            walking_onnx_path=os.path.join(duck_sim.REPO, "spiral_v5.onnx"),
+            walking_onnx_path=os.path.join(duck_sim.REPO, "local_storage", "policies", "spiral_v5.onnx"),
         )
     target = balanced_pose(free, hip_roll_shift) if pose is None else np.array(pose, dtype=np.float64)
     for i, qi in enumerate(policy.joint_qpos_indices):

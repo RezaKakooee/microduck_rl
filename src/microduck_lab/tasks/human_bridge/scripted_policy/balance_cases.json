@@ -1,0 +1,134 @@
+[
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.2,
+    "balance": 0.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.2,
+    "balance": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.2,
+    "balance": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.5,
+    "balance": 0.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.5,
+    "balance": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.5,
+    "balance": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.8,
+    "balance": 0.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.8,
+    "balance": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "body_center": 0.8,
+    "balance": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.0,
+    "balance": 0.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.0,
+    "balance": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.0,
+    "balance": 2.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.015,
+    "balance": 0.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.015,
+    "balance": 1.0
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/sideways_v1_iter250.onnx",
+    "speed": 0.12,
+    "lateral_gain": 4.0,
+    "heading_gain": 4.0,
+    "integral_gain": 6.0,
+    "lateral_limit": 0.3,
+    "y_target": 0.015,
+    "balance": 2.0
+  }
+]

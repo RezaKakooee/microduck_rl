@@ -2,6 +2,27 @@
 
 Written 2026-08-28. Everything below is verified working, not planned.
 
+## Human bridge + sideways walking — latest, 2026-09-26
+
+Full write-up: [docs/tasks/human_bridge.md](tasks/human_bridge.md). Short version:
+
+- **Goal:** one duck lies across a gap; the other walks across his back.
+- **Works:** he lies down as a bridge and holds her weight (<= 5.5 mm sag).
+- **Not solved:** she has never WALKED across. Best RL run (`bridge-v11b`)
+  steps onto his legs and falls. The scripted agents' `scripted_try96` looked
+  like a success but she tipped over onto him and fell across.
+- **Now enforced:** `tasks/human_bridge/story.py` fails a crossing unless her
+  trunk stays within ~25 deg and only her soles touch him or the ledges.
+- **Big bug fixed:** `bake.py` scrambled his frozen body for RL training
+  (v1-v8). Fixed and tested.
+- **New skill:** `Mjlab-Velocity-Sideways-MicroDuck`. v4 really steps sideways
+  (10-20 mm foot lift) but still turns 20-80 deg per 6 s.
+- **Nothing is training now.** Dev helpers: `local_storage/hb_dev/rl_policy/from_first_chat/`.
+- **User rules for videos:** render a clip for every attempt, failures too;
+  never overwrite; new numbered names.
+- **Next ideas:** wider gap (so falling across is impossible), strict checks as
+  the RL termination, a plank-to-brother curriculum.
+
 ## Active board play — latest behavior, 2026-09-05
 
 User review clarified that the duck should continuously rock the board, not
@@ -145,7 +166,7 @@ Those numbers were found by rendering frames and looking at them, not from CAD.
 
 ## Ice skating (Mjlab-Velocity-Ice-MicroDuck)
 
-Three runs. **The deliverable is `ice_v2_iter4000.onnx`** — a mid-training
+Three runs. **The deliverable is `local_storage/policies/ice_v2_iter4000.onnx`** — a mid-training
 checkpoint, not any final policy. It skates at 0.21-0.27 m/s against a 0.3
 command across mu 0.05-0.30, feet lifting 15 mm, and does not fall. The
 vendored walking policy on the same ice falls at 1.9 s.
@@ -214,8 +235,8 @@ which a forward topple supplies for free.
 Two traps for whoever measures this next:
 - The foot sites sit at 3-13 mm on the roller model, not tens of mm. A
   foot-height threshold of 45 mm reports 0% single support for every policy.
-- v1's checkpoints are `spiral_v1_iter9000.onnx` (no pose at all) and
-  `spiral_v1_iter9999.onnx` (the stroking walk).
+- v1's checkpoints are `local_storage/policies/spiral_v1_iter9000.onnx` (no pose at all) and
+  `local_storage/policies/spiral_v1_iter9999.onnx` (the stroking walk).
 
 ## Balance board (rocker) — solved, and now playing with it
 

@@ -1,0 +1,86 @@
+[
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.08,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.08,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.12,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.12,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.18,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v3_iter3000.onnx",
+    "speed": 0.18,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": false
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.08,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.08,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.12,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.12,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.18,
+    "lateral_gain": 2.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  },
+  {
+    "policy": "local_storage/hb_dev/scripted_policy/policies/bridge_v4_iter3500.onnx",
+    "speed": 0.18,
+    "lateral_gain": 6.0,
+    "heading_gain": 3.0,
+    "bridge_observations": true
+  }
+]

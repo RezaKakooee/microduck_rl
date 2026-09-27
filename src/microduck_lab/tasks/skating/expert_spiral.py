@@ -86,7 +86,7 @@ def run(kp_roll, kd_roll, kp_pitch, kd_pitch, seconds=10.0, speed=0.4,
     with contextlib.redirect_stdout(buf):
         policy, adr = duck_sim.make_policy(
             model, data,
-            walking_onnx_path=os.path.join(duck_sim.REPO, "spiral_v5.onnx"),
+            walking_onnx_path=os.path.join(duck_sim.REPO, "local_storage", "policies", "spiral_v5.onnx"),
         )
     # We only wanted the pose/limit setup; the network is never queried.
     target = policy.default_pose.copy()

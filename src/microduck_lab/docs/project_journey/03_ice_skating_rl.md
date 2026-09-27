@@ -107,7 +107,7 @@ just before the last friction stage, skates:
 That is better tracking than the vendored walking policy manages on dry ground
 (0.13 m/s). The walking policy on the same ice falls at 1.9 s.
 
-`ice_v2_iter4000.onnx` is the deliverable. Clips: `videos/ice_*.mp4`.
+`local_storage/policies/ice_v2_iter4000.onnx` is the deliverable. Clips: `videos/ice_*.mp4`.
 
 ## 6. Run v3: it marched in place
 
@@ -167,7 +167,7 @@ uv run scripts/export.py Mjlab-Velocity-Ice-MicroDuck \
 **Run on ice in CPU MuJoCo** — both surfaces must be slippery:
 
 ```bash
-uv run python -m microduck_lab.tools.headless_rollout --walking ice_v2_iter4000.onnx --new-cmd-obs \
+uv run python -m microduck_lab.tools.headless_rollout --walking local_storage/policies/ice_v2_iter4000.onnx --new-cmd-obs \
   --xml src/microduck_lab/models/scene_ice.xml --foot-friction 0.12 \
   --lin-vel-x 0.3 --seconds 15
 ```

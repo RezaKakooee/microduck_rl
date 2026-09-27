@@ -1,0 +1,12 @@
+{
+  "smoke_pass": true,
+  "full_crossing_pass": false,
+  "note": "A six-second smoke test ends before a full crossing; time limit is expected.",
+  "reference": "videos/human_bridge/scripted_policy/previous/scripted_try111.npz",
+  "trace_max_abs_error": 0.0,
+  "forbidden_modules": [],
+  "trial": "videos/human_bridge/scripted_policy/scripted_try1.mp4",
+  "min_up": 0.9962355083606723,
+  "min_z": 0.4496243377548642,
+  "max_prediction_qpos_error": 0.0
+}

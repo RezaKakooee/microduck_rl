@@ -96,7 +96,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--seconds',type=float,default=20.)
     ap.add_argument('--video');ap.add_argument('--voltage',type=float,default=7.4)
-    ap.add_argument('--params',default=str(paths.model('..','crawl_gait.npy')))
+    ap.add_argument('--params',default=str(paths.REPO / 'local_storage' / 'gaits' / 'crawl_gait.npy'))
     ap.add_argument('--report',default=paths.video('crawl','crawl_report.json'))
     a=ap.parse_args()
     p=np.load(a.params)

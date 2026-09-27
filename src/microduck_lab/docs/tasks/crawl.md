@@ -55,7 +55,7 @@ From `microduck_rl`, search and render on an EGL GPU node:
 sbatch -M cluster src/microduck_lab/tasks/crawl/baby.sbatch
 ```
 
-Evaluate the saved `crawl_baby_gait.npy` without rendering, or run the physics
+Evaluate the saved `local_storage/gaits/crawl_baby_gait.npy` without rendering, or run the physics
 regressions (including actual leg synchronization and posture rejection):
 
 ```bash
@@ -67,4 +67,4 @@ The search history, full-duration finalist results, render report, trajectory,
 and contact sheet are `videos/crawl/crawl_baby_*` and
 `videos/crawl/duck_crawl_baby_sheet.jpg`. Search, evaluation and rendering
 share one rollout function. The original `crawl.py`, `expert.py`,
-`crawl_gait.npy`, and `duck_crawl.mp4` were verified byte-for-byte unchanged.
+`local_storage/gaits/crawl_gait.npy`, and `duck_crawl.mp4` were verified byte-for-byte unchanged.
