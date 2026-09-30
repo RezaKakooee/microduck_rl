@@ -1,8 +1,126 @@
 # Salmon jump experiments
 
-Status: a small upward hop is demonstrated, but a clean back-to-feet landing
-has not yet been demonstrated. This is a motor-target search, not a newly
-trained RL policy. The existing standing policy is used for recovery.
+Status (2026-09-30): clean back-to-feet jumps in simulation (trials 1212, 1216).
+They pass the clean-landing judge. The hop is small and only just above the
+judge's flight limit. This is a motor-target search plus a closed-loop catch,
+not a trained RL policy. Not ready for hardware.
+
+Use `reference_salmon.json` (trial 1216). It is trial 1212's launch, but the
+push keyframe waits until the IMU pitch reaches -0.86 rad, and the crouch
+before the handoff is 0.1 s.
+
+## First clean landings (trials 1212-1217)
+
+400 Hz audits (trial 1215 replays 1212, trial 1217 replays 1216; slow videos
+`salmon_try1215_slow.mp4`, `salmon_try1217_slow.mp4`):
+
+| measure | 1212 | 1216 (with sync) |
+|---|---|---|
+| flight, no ground contact | 47.5 ms | 47.5 ms |
+| peak clearance | 4.0 mm | 4.0 mm |
+| COM speed at takeoff | 0.38 m/s up | 0.35 m/s up |
+| COM rise during flight | 6.8 mm | 5.9 mm |
+| body contact after takeoff | 0 N | 0 N |
+| standing at the end | 4.8 s | 4.8 s |
+
+The motion: roll up from the back, land on the feet in a crouch, push, then
+fold the legs fast (a 40 ms keyframe). The feet leave the ground for 47.5 ms.
+The robot lands in a crouch and the standing policy takes over. The hop is too
+small to see in real time; use the slow replay.
+
+Trials 1213 (another launch) and 1214 (0.1 s crouch) also pass.
+Cases: `handoff_cases.json`.
+
+### Why every earlier hop failed
+
+Every earlier hop landed with the COM 43-61 mm behind the sole centre.
+The sole is 54 mm long, so the COM was behind the heel. No standing controller
+can hold that. Measured by re-running all 250 qualifying hops of `review_2.json`.
+
+Other measured facts:
+
+- The robot cannot hop from a balanced crouch. The COM rises 30-64 mm but the
+  feet never leave the ground. The flight needs the roll-up momentum.
+- Under load the servos lag their targets by up to 0.8 rad. A scripted rise
+  from the crouch failed 54 of 54 times. Hand over to the standing policy.
+- In flight, moving the head forward turns the trunk backward, and the other
+  way round. The servos move the legs only about 0.1-0.2 rad in a flight.
+
+### What was added
+
+- `catch.py`: the catch after takeoff. In flight it solves leg angles that put
+  a flat sole under the COM (inverse kinematics on a scratch MjData). After
+  touchdown it holds a crouch with ankle and hip feedback, then hands over.
+  It uses only joint angles and the IMU, as the real robot can.
+- `run.py`: the physics loop is now one `Episode` class, shared by the filmed
+  runner and the search. Old trials replay exactly (trials 1211, 1212: trace
+  difference 0.0). New: `recovery='catch'`, and an optional keyframe that
+  waits for the IMU pitch (`sync_pose`, `sync_pitch`).
+- `catch_search.py`: headless CPU search on Slurm, no video. It scores the COM
+  position over the soles at arrival and at touchdown. `--perturb N` scores
+  each candidate on N noisy copies. Film the winners with `batch.py`.
+
+### Robustness (better, not solved)
+
+The same 60 script changes for both (`lander/robust_check.py`, fixed draws):
+
+| change | 1212 | 1216 (with sync) |
+|---|---|---|
+| keyframe angles, noise 0.02 rad | 6 / 30 | 16 / 30 |
+| start pitch, +-0.03 rad | 2 / 10 | 7 / 10 |
+| durations, noise 5 ms | 2 / 20 | 5 / 20 |
+| total | 10 / 60 | 28 / 60 |
+
+Physics changes (`lander/physics_check.py`; applied before `World.start()`):
+
+| change | 1212 | 1216 (with sync) |
+|---|---|---|
+| none | pass | pass |
+| battery 6.8 / 7.0 / 7.2 V | fail (landing) | fail (flight too short) |
+| battery 7.6 / 7.8 V | fail (landing) | pass |
+| floor friction x0.5 / x0.7 | pass | pass |
+| floor friction x1.3 | fail | pass |
+| mass x0.95 / x0.98 | fail | pass |
+| mass x1.02 / x1.05 | fail / pass | fail (flight too short) |
+| total | 4 / 13 | 8 / 13 |
+
+With the sync, the landing held in every physics case. The failures are now
+a hop that is too small: 2.4-2.9 mm peak clearance, and the judge needs two
+50 Hz samples above 2 mm. The flight also needs the leg fold at the moment of
+peak upward speed; changing the push or fold time by a few ms loses it.
+
+Next useful work: search for a higher hop with `--sync-pose 2 --perturb 6`
+and the `height` objective. A higher hop gives margin at low battery voltage.
+
+### Reproduce
+
+```bash
+# score candidates headless (CPU node, no video)
+.venv/bin/python -m microduck_lab.rl.scripted_policy.salmon_jump.catch_search \
+  rescore --cases src/microduck_lab/rl/scripted_policy/salmon_jump/reference_salmon.json --workers 1
+# film (GPU node), then the 400 Hz audit with a slow replay
+sbatch -M cluster local_storage/hb_dev/scripted_policy/video.sbatch \
+  -m microduck_lab.rl.scripted_policy.salmon_jump.batch \
+  --config src/microduck_lab/rl/scripted_policy/salmon_jump/reference_salmon.json --workers 1 --seconds 9
+sbatch -M cluster local_storage/hb_dev/scripted_policy/video.sbatch \
+  -m microduck_lab.rl.scripted_policy.salmon_jump.audit \
+  --trial videos/human_bridge/scripted_policy/salmon_jump/salmon_try1216.json --slow-motion
+# robust search from successes (big CPU node; about 1 min per generation)
+.venv/bin/python -m microduck_lab.rl.scripted_policy.salmon_jump.catch_search search \
+  --seeds local_storage/hb_dev/scripted_policy/salmon_jump/catch_search/rescore_6.json --num-seeds 14 \
+  --fix '{"rise_s": 0.0, "pitch_rate_limit": 100.0}' --sync-pose 2 --perturb 6 --population 24 --workers 60
+```
+
+Give each search worker about 1.5 GB of memory. With less, the pool stalls.
+
+Search outputs are in `local_storage/hb_dev/scripted_policy/salmon_jump/catch_search/`.
+Scratch scripts (trace, checks, Slurm drivers) are in `.../salmon_jump/lander/`.
+
+## Earlier work (before 2026-09-30)
+
+Status then: a small upward hop is demonstrated, but a clean back-to-feet
+landing has not yet been demonstrated. The existing standing policy is used
+for recovery.
 
 All code, scratch data and videos belong to `scripted_policy`. No other
 human-bridge policy implementation is used. The world uses the owned

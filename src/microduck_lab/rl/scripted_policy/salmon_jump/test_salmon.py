@@ -125,3 +125,34 @@ def test_separated_clearance_samples_do_not_qualify_a_launch():
     a[210:215,9]=0.;a[210:215,10]=.01;a[210:215,13]=-.3
     a[215:,3]=.115;a[215:,4]=1.;a[215:,6]=.14;a[215:,8]=7.4;a[215:,9]=0.
     assert summarize(a)['takeoff_com_vz'] is None
+
+
+def test_catch_mode_validates_its_parameters():
+    Candidate(recovery='catch', catch={'neck': -1.})
+    with pytest.raises(TypeError): Candidate(recovery='catch', catch={'wings': 1.})
+    with pytest.raises(ValueError): Candidate(recovery='catch', catch={'crouch_s': -1.})
+
+
+def test_flat_foot_solver_returns_the_stand_pose_and_a_balanced_crouch():
+    from microduck_lab.tasks.human_bridge.scripted_policy.world import World, SetDesign
+    from microduck_lab.rl.scripted_policy.salmon_jump.catch import Planner, LEG
+    duck = World(SetDesign([]), cast=('she',)).ducks['she']
+    home = np.array([0., -.087, -.458, -.005, .453, .349, .349, 0., 0., 0., .087, .458, .005, -.453])
+    planner = Planner(duck)
+    flat, offset, height = planner.measure(home, 0.)
+    assert abs(flat) < .01 and abs(offset) < .01 and .13 < height < .15
+    legs = [home[INDEX['left_'+n]] for n in LEG]
+    q, _ = planner.solve(home, 0., offset, np.add(legs, .1), height)
+    np.testing.assert_allclose(q, home, atol=5e-3)  # home sole is tilted 0.1 deg
+    # Leaning back 22 deg with the head forward: flat sole, COM 5 mm ahead of its centre.
+    base = home.copy(); base[INDEX['neck_pitch']] = -1.
+    q, x = planner.solve(base, np.radians(-22), .005, [-.75, 0., .06])
+    np.testing.assert_allclose(planner.measure(q, np.radians(-22))[:2], [0., .005], atol=1e-4)
+    assert q[INDEX['right_knee']] == -q[INDEX['left_knee']]
+
+
+def test_sync_keyframe_is_validated_and_off_by_default():
+    assert Candidate().sync_pose == -1
+    Candidate(sync_pose=2, sync_pitch=-.6)
+    with pytest.raises(ValueError): Candidate(sync_pose=3)
+    with pytest.raises(ValueError): Candidate(sync_pose=1, sync_pitch=2.)

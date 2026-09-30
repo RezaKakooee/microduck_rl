@@ -18,6 +18,7 @@ import numpy as np
 
 from microduck_lab.tasks.human_bridge.scripted_policy.world import World, SetDesign, SERVOS, CONTROL_DT
 from microduck_lab.tasks.human_bridge.scripted_policy.runtime import brain
+from microduck_lab.rl.scripted_policy.salmon_jump.catch import Catch, CatchController
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = Path('videos/human_bridge/scripted_policy/salmon_jump')
@@ -42,6 +43,13 @@ class Candidate:
     landing_ankle_bias: float = 0.
     landing_bias_s: float = .3
     catch_start_s: float | None = None
+    catch: dict | None = None  # Catch parameters for recovery='catch'
+    # Keyframe `sync_pose` waits until the IMU trunk pitch reaches `sync_pitch`
+    # (rad, rising from -pi/2 on the back), or until `sync_timeout_s`. This ties
+    # the push to the real roll-up, not to the clock. -1 = off.
+    sync_pose: int = -1
+    sync_pitch: float = -.8
+    sync_timeout_s: float = .3
 
     def __post_init__(self):
         if self.kind not in ('jump', 'rest', 'stand'):
@@ -51,7 +59,7 @@ class Candidate:
             raise ValueError('At least two five-angle poses required')
         if self.interpolation not in ('smoothstep', 'linear', 'step'):
             raise ValueError('Unknown interpolation')
-        if self.recovery not in ('auto', 'after_script', 'disabled', 'airborne'):
+        if self.recovery not in ('auto', 'after_script', 'disabled', 'airborne', 'catch'):
             raise ValueError('Unknown recovery mode')
         if len(self.durations) != len(self.poses) or not np.isfinite(self.durations).all() or min(self.durations) < .04:
             raise ValueError('Finite segment durations >= .04 s required')
@@ -61,6 +69,11 @@ class Candidate:
             raise ValueError('Finite landing corrections and positive fade time required')
         if self.catch_start_s is not None and (not np.isfinite(self.catch_start_s) or self.catch_start_s < .04):
             raise ValueError('Catch time must be >= .04 s after the settle period')
+        if self.recovery == 'catch':
+            Catch(**(self.catch or {}))
+        if not -1 <= self.sync_pose < len(self.poses) or not -1.45 <= self.sync_pitch <= 1.45 \
+                or not 0. <= self.sync_timeout_s <= 2.:
+            raise ValueError('Sync keyframe, pitch or timeout out of range')
         if not np.isfinite(self.poses).all() or not np.isfinite([self.hold, self.start_pitch]).all() or self.hold < 0:
             raise ValueError('Non-finite or negative parameters')
 
@@ -195,6 +208,120 @@ def summarize(trace, kind='jump'):
                 settled_up_range=settled[:,4].tolist()[::5])
 
 
+class Episode:
+    """One episode: placement before World.start(), then `tick()` at 50 Hz.
+
+    Headless. `run` films it; the catch search runs it without video. Both use
+    this one physics path, so a searched result replays exactly on film.
+    """
+
+    def __init__(self, candidate):
+        self.c = candidate
+        self.w = w = World(SetDesign([]), cast=('she',))
+        self.duck = duck = w.ducks['she']
+        self.controller = brain(duck, stand_only=True)
+        self.home = home = self.controller.default_pose.copy()
+        pitch = 0. if candidate.kind == 'stand' else candidate.start_pitch
+        duck.place((0.,0.,.4), pitch=pitch, q=home)
+        position = duck.pos()
+        position[2] += .0005-duck.points(duck.solid)[:,2].min()
+        duck.place(position, pitch=pitch, q=home)
+        w.start()
+        self.rows, self.states, self.targets, self.velocities, self.torques = [], [], [], [], []
+        self.recovery = False
+        self.catch_until = 0.
+        self.recovery_time = None
+        self.head_ids = [INDEX['neck_pitch'],INDEX['head_pitch']]
+        self.recovery_head = home[self.head_ids].copy()
+        self.catcher = None
+        self.feet = 0.
+        self.n = 0
+        self.shift = 0.  # keyframe clock delay from the sync wait
+        self.synced = candidate.sync_pose < 0
+
+    def script_time(self):
+        """Keyframe clock. With a sync keyframe it waits there for the IMU pitch."""
+        c, now = self.c, self.w.t-3.-self.shift
+        if self.synced:
+            return now
+        start = float(sum(c.durations[:c.sync_pose]))
+        R = self.duck.R()
+        if np.arctan2(-R[2, 0], R[2, 2]) >= c.sync_pitch or now >= start+c.sync_timeout_s:
+            self.shift, self.synced = self.w.t-3.-start, True  # may also start early
+            return start
+        return min(now, start)
+
+    def start_recovery(self):
+        self.recovery = True
+        self.recovery_time = self.w.t
+        self.recovery_head = self.duck.q[self.head_ids].copy()
+        if self.c.recovery == 'catch':
+            self.catcher = CatchController(self.duck, self.controller, self.home, Catch(**(self.c.catch or {})))
+
+    def tick(self):
+        """One 50 Hz control step. Returns True on ticks that keep a state (25 Hz)."""
+        c, w, duck, controller, home = self.c, self.w, self.duck, self.controller, self.home
+        head_ids = self.head_ids
+        if c.kind == 'stand':
+            controller.act()
+        elif w.t < 3. or c.kind == 'rest':
+            duck.hold(home)
+        elif self.recovery and self.catcher is not None:
+            self.catcher.act(w.t, self.feet)
+        elif self.recovery:
+            if w.t < self.catch_until:
+                duck.hold(home)
+            else:
+                controller.act()
+            if c.head_settle_s > 0. and self.recovery_time is not None:
+                u = np.clip((w.t-self.recovery_time)/c.head_settle_s,0.,1.)
+                target = duck.target.copy()
+                target[head_ids] = (1-u)*self.recovery_head + u*target[head_ids]
+                # Preserve untouched policy commands, including intentional
+                # PD target overshoot beyond joint travel.
+                duck.target = target
+                duck.motor.q_target[:] = target
+            if self.recovery_time is not None and (c.landing_hip_bias or c.landing_ankle_bias):
+                blend = 1.-np.clip((w.t-self.recovery_time)/c.landing_bias_s,0.,1.)
+                for joint,bias in [('hip_pitch',c.landing_hip_bias),('ankle',c.landing_ankle_bias)]:
+                    for side,sign in [('left',1.),('right',-1.)]:
+                        j = INDEX[side+'_'+joint]
+                        duck.target[j] += sign*bias*blend
+                duck.motor.q_target[:] = duck.target
+        else:
+            duck.hold(target_at(c,home,self.script_time()))
+        w.step()
+        mujoco.mj_forward(w.model,w.data)
+        mujoco.mj_subtreeVel(w.model,w.data)
+        feet, body, clearance = contact_state(duck)
+        self.feet = feet
+        handoff = sum(c.durations)
+        if c.recovery == 'after_script':
+            handoff += c.hold + .3
+        early_catch = c.catch_start_s is not None and w.t >= 3.+c.catch_start_s
+        airborne_catch = (c.recovery in ('airborne', 'catch') and feet+body < .05
+                          and clearance > 0. and duck.up() > .5
+                          and w.data.subtree_linvel[duck.trunk,2] > .1)
+        if not self.recovery and c.kind == 'jump' and w.t > 3. and (early_catch or airborne_catch):
+            self.catch_until = w.t + c.air_catch_s
+            self.start_recovery()
+        if (not self.recovery and c.kind == 'jump' and c.recovery != 'disabled' and w.t-self.shift > 3.+handoff
+                and duck.up() > .85 and feet > 1. and body < .5 and duck.pos()[2] > .085):
+            self.start_recovery()
+        self.rows.append([w.t,*duck.pos(),duck.up(),duck.R()[2,0],duck.com()[2],
+                          w.data.qvel[duck.dof+2],feet,body,clearance,
+                          np.max(np.abs(duck.torque())),float(self.recovery),
+                          w.data.subtree_linvel[duck.trunk,2]])
+        self.targets.append(duck.target.copy())
+        self.velocities.append(w.data.qvel.copy())
+        self.torques.append(duck.torque().copy())
+        keep = self.n % 2 == 1
+        if keep:
+            self.states.append(w.data.qpos.copy())
+        self.n += 1
+        return keep
+
+
 def run(candidate, seconds=8., width=640):
     if os.environ.get('MUJOCO_GL') != 'egl' or not os.environ.get('SLURM_JOB_ID'):
         raise RuntimeError('Physical attempts must run through our video.sbatch on a GPU node')
@@ -205,88 +332,19 @@ def run(candidate, seconds=8., width=640):
     source_files += [Path(__import__('inspect').getfile(World)), Path(__import__('inspect').getfile(brain))]
     sources = {p: p.read_bytes() for p in source_files}
     stem = reserve()
-    w = World(SetDesign([]), cast=('she',))
-    duck = w.ducks['she']
-    controller = brain(duck, stand_only=True)
-    home = controller.default_pose.copy()
-    pitch = 0. if candidate.kind == 'stand' else candidate.start_pitch
-    duck.place((0.,0.,.4), pitch=pitch, q=home)
-    position = duck.pos()
-    position[2] += .0005-duck.points(duck.solid)[:,2].min()
-    duck.place(position, pitch=pitch, q=home)
-    w.start()
+    episode = Episode(candidate)
+    w, duck = episode.w, episode.duck
     renderer = mujoco.Renderer(w.model, height=width*9//16, width=width)
     camera = mujoco.MjvCamera()
     camera.distance, camera.azimuth, camera.elevation = .62, 95., -18.
     writer = imageio.get_writer(str(stem.with_suffix('.mp4')), fps=25, codec='libx264',
                                 macro_block_size=2, output_params=['-crf','25','-movflags',
                                 '+frag_keyframe+empty_moov+default_base_moof'])
-    rows, states, targets, velocities, torques = [], [], [], [], []
-    recovery = False
-    catch_until = 0.
-    recovery_time = None
-    head_ids = [INDEX['neck_pitch'],INDEX['head_pitch']]
-    recovery_head = home[head_ids].copy()
     started = time.monotonic()
     error = None
     try:
         for tick in range(round(seconds/CONTROL_DT)):
-            if candidate.kind == 'stand':
-                controller.act()
-            elif w.t < 3. or candidate.kind == 'rest':
-                duck.hold(home)
-            elif recovery:
-                if w.t < catch_until:
-                    duck.hold(home)
-                else:
-                    controller.act()
-                if candidate.head_settle_s > 0. and recovery_time is not None:
-                    u = np.clip((w.t-recovery_time)/candidate.head_settle_s,0.,1.)
-                    target = duck.target.copy()
-                    target[head_ids] = (1-u)*recovery_head + u*target[head_ids]
-                    # Preserve untouched policy commands, including intentional
-                    # PD target overshoot beyond joint travel.
-                    duck.target = target
-                    duck.motor.q_target[:] = target
-                if recovery_time is not None and (candidate.landing_hip_bias or candidate.landing_ankle_bias):
-                    blend = 1.-np.clip((w.t-recovery_time)/candidate.landing_bias_s,0.,1.)
-                    for joint,bias in [('hip_pitch',candidate.landing_hip_bias),('ankle',candidate.landing_ankle_bias)]:
-                        for side,sign in [('left',1.),('right',-1.)]:
-                            j = INDEX[side+'_'+joint]
-                            duck.target[j] += sign*bias*blend
-                    duck.motor.q_target[:] = duck.target
-            else:
-                duck.hold(target_at(candidate,home,w.t-3.))
-            w.step()
-            mujoco.mj_forward(w.model,w.data)
-            mujoco.mj_subtreeVel(w.model,w.data)
-            feet, body, clearance = contact_state(duck)
-            handoff = sum(candidate.durations)
-            if candidate.recovery == 'after_script':
-                handoff += candidate.hold + .3
-            early_catch = candidate.catch_start_s is not None and w.t >= 3.+candidate.catch_start_s
-            airborne_catch = (candidate.recovery == 'airborne' and feet+body < .05
-                              and clearance > 0. and duck.up() > .5
-                              and w.data.subtree_linvel[duck.trunk,2] > .1)
-            if not recovery and candidate.kind == 'jump' and w.t > 3. and (early_catch or airborne_catch):
-                recovery = True
-                catch_until = w.t + candidate.air_catch_s
-                recovery_time = w.t
-                recovery_head = duck.q[head_ids].copy()
-            if (not recovery and candidate.kind == 'jump' and candidate.recovery != 'disabled' and w.t > 3.+handoff
-                    and duck.up() > .85 and feet > 1. and body < .5 and duck.pos()[2] > .085):
-                recovery = True
-                recovery_time = w.t
-                recovery_head = duck.q[head_ids].copy()
-            rows.append([w.t,*duck.pos(),duck.up(),duck.R()[2,0],duck.com()[2],
-                         w.data.qvel[duck.dof+2],feet,body,clearance,
-                         np.max(np.abs(duck.torque())),float(recovery),
-                         w.data.subtree_linvel[duck.trunk,2]])
-            targets.append(duck.target.copy())
-            velocities.append(w.data.qvel.copy())
-            torques.append(duck.torque().copy())
-            if tick % 2 == 1:
-                states.append(w.data.qpos.copy())
+            if episode.tick():
                 camera.lookat[:] = [duck.pos()[0],duck.pos()[1],.14]
                 renderer.update_scene(w.data,camera=camera)
                 writer.append_data(renderer.render())
@@ -296,7 +354,9 @@ def run(candidate, seconds=8., width=640):
     finally:
         writer.close()
         renderer.close()
-        np.savez_compressed(stem.with_suffix('.npz'), trace=rows,qpos=states,targets=targets,qvel=velocities,torques=torques)
+        rows = episode.rows
+        np.savez_compressed(stem.with_suffix('.npz'), trace=rows,qpos=episode.states,targets=episode.targets,
+                            qvel=episode.velocities,torques=episode.torques)
         result = dict(candidate=asdict(candidate),error=error,video=str(stem.with_suffix('.mp4')),
                       wall_s=time.monotonic()-started,robot_mass_kg=duck.mass(),
                       motor_model='BAM XL330 M6, 7.4 V, unmodified limits',
