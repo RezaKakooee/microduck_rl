@@ -1,0 +1,21 @@
+{
+  "lead_in": -0.3814,
+  "lead_out": 0.3657,
+  "trail_out": -0.3783,
+  "trail_in": 0.3694,
+  "clamp_knee": 1.112,
+  "clamp_ankle": -0.0737,
+  "free_knee": -0.1311,
+  "free_ankle": 0.0758,
+  "carry_knee": 0.3471,
+  "carry_ankle": -0.0924,
+  "grip_trail": 1.2817,
+  "slide_lead": 0.9905,
+  "grip_lead": 0.4316,
+  "slide_trail": 0.4917,
+  "relax": 0.433,
+  "carry": 1.1997,
+  "start": 1.5,
+  "note": "cross-entropy search (gen 11), every step x1.4 slower; 6 cycles = 159 mm in 29 s, traverse passed",
+  "trial": "rope_try63"
+}

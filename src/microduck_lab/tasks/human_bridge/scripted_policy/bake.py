@@ -2,7 +2,7 @@
 
 Runs the real scene (he stands, falls into PLANK, then holds himself
 straight under BAM for SETTLE_S, as the story does before she starts) and
-records every solid geom of his body: its mesh file and its world pose. `rl/microduck_bridge_sideways_env_cfg.py` rebuilds him from
+records every solid geom of his body: its mesh file and its world pose. `rl/human_bridge/microduck_bridge_sideways_env_cfg.py` rebuilds him from
 this file as fixed geometry on the "terrain" body, so her training sees the
 body he actually settles into, sag and all.
 
@@ -28,10 +28,10 @@ OUT = Path(__file__).resolve().parent / "bridge_pose.json"
 
 def mesh_files():
     """Mesh name (unprefixed) -> (file, scale), from the robot MJCF."""
-    spec = mujoco.MjSpec.from_file(paths.model("robot_allcollisions_mouth.xml"))
+    spec = mujoco.MjSpec.from_file(paths.model("robot/robot_allcollisions_mouth.xml"))
     meshdir = Path(spec.meshdir)
     if not meshdir.is_absolute():
-        meshdir = (Path(paths.model("robot_allcollisions_mouth.xml")).parent / meshdir).resolve()
+        meshdir = (Path(paths.model("robot/robot_allcollisions_mouth.xml")).parent / meshdir).resolve()
     # The MJCF leaves meshes unnamed; MuJoCo names each after its file stem.
     return {(m.name or Path(m.file).stem): (str((meshdir / m.file).resolve().relative_to(paths.REPO)),
                                            list(m.scale))

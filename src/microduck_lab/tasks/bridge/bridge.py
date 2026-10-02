@@ -41,7 +41,7 @@ from microduck_lab.sim import duck_sim
 from microduck_lab.sim.duck_sim import CONTROL_DT, DECIMATION, FALL_HEIGHT
 
 WALKING_ONNX = os.path.join(os.path.dirname(duck_sim.REPO), "microduck", "policies", "alpha_walking.onnx")
-TEMPLATE = paths.model("scene_beam.xml")
+TEMPLATE = paths.model("bridge/scene_beam.xml")
 
 # Default bridge geometry
 DEFAULT_START_X = 0.00   # start of suspended span (m)
@@ -267,7 +267,7 @@ def write_scene(bridge_xml_str, target_file=None, equality_xml_str=""):
         scene_content = scene_content.replace("</mujoco>", f"{equality_xml_str}\n</mujoco>")
 
     if target_file is None:
-        target_file = str(paths.model("scene_bridge_active.xml"))
+        target_file = str(paths.model("bridge/scene_bridge_active.xml"))
 
     Path(target_file).parent.mkdir(parents=True, exist_ok=True)
     with open(target_file, "w") as f:

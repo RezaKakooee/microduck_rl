@@ -13,11 +13,11 @@ import torch
 
 # Load the task package first (registers every task; see test_sideways_cfg.py).
 import mjlab_microduck.tasks  # noqa: F401
-from microduck_lab.rl.rl_policy import beam_terrain as T
-from microduck_lab.rl.rl_policy import mdp_beam as M
-from microduck_lab.rl.rl_policy import microduck_velocity_sideways_beam_env_cfg as B
-from microduck_lab.rl.microduck_velocity_sideways_env_cfg import make_microduck_velocity_sideways_env_cfg
-from microduck_lab.rl.rl_policy.warmstart_beam import BEAM_CRITIC_EXTRA, widen_critic
+from microduck_lab.rl.human_bridge.rl_policy import beam_terrain as T
+from microduck_lab.rl.human_bridge.rl_policy import mdp_beam as M
+from microduck_lab.rl.human_bridge.rl_policy import microduck_velocity_sideways_beam_env_cfg as B
+from microduck_lab.rl.walking.microduck_velocity_sideways_env_cfg import make_microduck_velocity_sideways_env_cfg
+from microduck_lab.rl.human_bridge.rl_policy.warmstart_beam import BEAM_CRITIC_EXTRA, widen_critic
 
 
 @pytest.fixture(scope="module")
@@ -550,7 +550,7 @@ def test_widen_critic_sets_new_stats_and_count():
     assert torch.allclose(new["obs_normalizer._mean"][0, 5:], torch.tensor([0.1, 0.2, 0.3]))
     assert torch.allclose(new["obs_normalizer._std"][0, 5:], torch.tensor([2.0, 1.0, 0.5]))
     assert int(new["obs_normalizer.count"]) == 2_000_000
-    from microduck_lab.rl.rl_policy.warmstart_beam import CRITIC_COUNT
+    from microduck_lab.rl.human_bridge.rl_policy.warmstart_beam import CRITIC_COUNT
     assert CRITIC_COUNT <= 5_000_000        # new inputs must still move: rate 4096 / count per step
 
 
@@ -571,7 +571,7 @@ def test_runner_cfg():
     assert rl.experiment_name == "velocity_sideways_beam"
     assert rl.algorithm.gamma == pytest.approx(0.995)
     assert rl.algorithm.symmetry_cfg is None
-    from microduck_lab.rl.microduck_velocity_sideways_env_cfg import MicroduckSidewaysRlCfg
+    from microduck_lab.rl.walking.microduck_velocity_sideways_env_cfg import MicroduckSidewaysRlCfg
     assert MicroduckSidewaysRlCfg.experiment_name == "velocity_sideways"   # base untouched
 
 
@@ -587,6 +587,6 @@ def test_scan_miss_reads_above_the_swing_targets_but_stays_small():
     """A ray over a gap reads SCAN_MAX_DISTANCE. It must stay above the swing
     target and lift range (normal steps read true) but small, so a landing
     beside a gap is not charged 400x a normal one (it was 0.10 m)."""
-    from microduck_lab.rl import microduck_velocity_sideways_env_cfg as side
+    from microduck_lab.rl.walking import microduck_velocity_sideways_env_cfg as side
     assert side.SWING_HEIGHT_TARGET < B.SCAN_MAX_DISTANCE <= 0.05
     assert side.LIFT_RANGE[1] < B.SCAN_MAX_DISTANCE

@@ -150,7 +150,7 @@ def test_bridge_imports_stay_inside_our_package():
                 if name.startswith('microduck_lab.tasks.human_bridge.'):
                     assert name == 'microduck_lab.tasks.human_bridge.scripted_policy' or name.startswith('microduck_lab.tasks.human_bridge.scripted_policy.'), (path, name)
                 if name.startswith('microduck_lab.rl.'):
-                    assert name.startswith('microduck_lab.rl.scripted_policy.'), (path, name)
+                    assert name.startswith('microduck_lab.rl.human_bridge.scripted_policy.'), (path, name)
 
 
 def test_missing_policy_fails_before_a_trial():

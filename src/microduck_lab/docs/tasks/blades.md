@@ -16,11 +16,11 @@ it.
 
 | File | What |
 |---|---|
-| `src/microduck_lab/rl/microduck_velocity_blades_env_cfg.py` | The task cfg. Builds on the walking recipe. Adds the pairs in a `spec_fn`, the DR event, the per-step projection event, the curriculum, and the heading hold. |
-| `src/microduck_lab/rl/mdp_blades.py` | All new MDP code: the projection maths, the two events, the curriculum. Nothing was added to `mdp.py`. |
+| `src/microduck_lab/rl/skating/microduck_velocity_blades_env_cfg.py` | The task cfg. Builds on the walking recipe. Adds the pairs in a `spec_fn`, the DR event, the per-step projection event, the curriculum, and the heading hold. |
+| `src/microduck_lab/rl/skating/mdp_blades.py` | All new MDP code: the projection maths, the two events, the curriculum. Nothing was added to `mdp.py`. |
 | `src/mjlab_microduck/tasks/__init__.py` | One block appended: registers `Mjlab-Velocity-Blades-MicroDuck`. |
 | `src/microduck_lab/src/microduck_lab/tests/test_blades_cfg.py` | 19 CPU tests: the tangent mapping, the projection maths, the pairs on the real mjlab scene, the events writing the model, the cfg wiring, the 61D obs contract. |
-| `src/microduck_lab/models/scene_blades.xml` | CPU playback scene with two static `<pair>` entries. |
+| `src/microduck_lab/models/skating/scene_blades.xml` | CPU playback scene with two static `<pair>` entries. |
 | `src/microduck_lab/tasks/skating/blades_rollout.py` | CPU rollout that applies the same per-step projection as training. Use this to judge a checkpoint. |
 | `src/microduck_lab/tools/blades_warp_check.py` | GPU-node check: mujoco_warp honours per-world anisotropic pairs, and the projection is live in the built env. |
 
@@ -177,7 +177,7 @@ see the difference.
 3. The plain static scene (exact only while the duck faces +X):
 
 ```
-uv run python -m microduck_lab.tools.headless_rollout --walking <policy.onnx> --new-cmd-obs --xml src/microduck_lab/models/scene_blades.xml --lin-vel-x 0.3 --seconds 12
+uv run python -m microduck_lab.tools.headless_rollout --walking <policy.onnx> --new-cmd-obs --xml src/microduck_lab/models/skating/scene_blades.xml --lin-vel-x 0.3 --seconds 12
 ```
 
 `--foot-friction` does nothing here: the pair overrides geom friction.

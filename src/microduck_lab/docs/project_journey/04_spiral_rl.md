@@ -5,7 +5,7 @@
 extended straight out behind, like the photo of the skater.
 
 The task is `Mjlab-Spiral-Flat-MicroDuck` in
-`src/microduck_lab/rl/microduck_spiral_env_cfg.py`, built on the roller
+`src/microduck_lab/rl/skating/microduck_spiral_env_cfg.py`, built on the roller
 recipe. Every version is still in that file, with the reason it changed.
 
 The short version: all six failed, and the reasons were different each time.

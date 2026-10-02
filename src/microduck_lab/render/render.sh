@@ -110,7 +110,7 @@ clips)
 
 ice)
   D=$(out ice_experts)
-  ICE=src/microduck_lab/models/scene_ice.xml
+  ICE=src/microduck_lab/models/skating/scene_ice.xml
   RI="$R microduck_lab.tools.headless_rollout --new-cmd-obs --xml $ICE"
   echo "### A baseline: the WALKING policy on ice"
   $RI --walking "$P/alpha_walking.onnx" --foot-friction 0.08 --lin-vel-x 0.3 --seconds 12 --video "$D/ice_a_walker_fails.mp4" 2>/dev/null | grep -E "body speed|fell:"

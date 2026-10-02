@@ -17,12 +17,12 @@ import torch
 import mjlab.terrains as terrain_gen
 from mjlab.terrains.terrain_generator import TerrainGenerator
 
-from microduck_lab.rl import mdp_terrain
+from microduck_lab.rl.walking import mdp_terrain
 from mjlab_microduck.tasks.microduck_velocity_env_cfg import (
     _soften_terrain_contacts,
     make_microduck_velocity_env_cfg,
 )
-from microduck_lab.rl.microduck_velocity_terrain_env_cfg import (
+from microduck_lab.rl.walking.microduck_velocity_terrain_env_cfg import (
     FOOT_SWING_TARGET,
     HfFrustumSlopeTerrainCfg,
     PLATFORM_WIDTH,

@@ -51,7 +51,7 @@ def markers_xml(step=.25,count=22):
 class Crawl:
     def __init__(self,voltage=7.4,settle=1.0):
         spec=mujoco.MjSpec.from_string(world_xml())
-        spec.attach(mujoco.MjSpec.from_file(paths.model('robot_allcollisions_mouth.xml')),
+        spec.attach(mujoco.MjSpec.from_file(paths.model('robot/robot_allcollisions_mouth.xml')),
                     prefix='he_',frame=spec.worldbody.add_frame())
         bam=load_model(motor_name='xl330',model='m6')
         bam.actuator.kp=200;bam.actuator.vin=voltage;bam.actuator.max_current=1.75

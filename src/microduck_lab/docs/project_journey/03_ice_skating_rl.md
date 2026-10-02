@@ -5,7 +5,7 @@
 no grip.
 
 The task is `Mjlab-Velocity-Ice-MicroDuck` in
-`src/microduck_lab/rl/microduck_velocity_ice_env_cfg.py`. It builds on the
+`src/microduck_lab/rl/skating/microduck_velocity_ice_env_cfg.py`. It builds on the
 walking recipe so that the whole domain-randomisation and observation stack
 stays in sync.
 
@@ -168,7 +168,7 @@ uv run scripts/export.py Mjlab-Velocity-Ice-MicroDuck \
 
 ```bash
 uv run python -m microduck_lab.tools.headless_rollout --walking local_storage/policies/ice_v2_iter4000.onnx --new-cmd-obs \
-  --xml src/microduck_lab/models/scene_ice.xml --foot-friction 0.12 \
+  --xml src/microduck_lab/models/skating/scene_ice.xml --foot-friction 0.12 \
   --lin-vel-x 0.3 --seconds 15
 ```
 

@@ -14,8 +14,8 @@ import pytest
 import torch
 
 from mjlab.scene import Scene
-from microduck_lab.rl import mdp_blades
-from microduck_lab.rl.mdp_blades import (
+from microduck_lab.rl.skating import mdp_blades
+from microduck_lab.rl.skating.mdp_blades import (
     PAIR_AXIS_WORLD_X,
     PAIR_AXIS_WORLD_Y,
     blade_axis_radii,
@@ -26,7 +26,7 @@ from microduck_lab.rl.mdp_blades import (
     randomize_blade_friction,
     sole_long_axis_in_body,
 )
-from microduck_lab.rl.microduck_velocity_blades_env_cfg import (
+from microduck_lab.rl.skating.microduck_velocity_blades_env_cfg import (
     BLADE_PAIR_NAMES,
     BLADE_RULE,
     BLADE_STAGES,
@@ -40,7 +40,7 @@ from mjlab_microduck.tasks.microduck_velocity_env_cfg import (
 )
 
 WALK_SCENE = "src/mjlab_microduck/robot/microduck/scene.xml"
-BLADES_SCENE = "src/microduck_lab/models/scene_blades.xml"
+BLADES_SCENE = "src/microduck_lab/models/skating/scene_blades.xml"
 
 
 def _repo_path(rel):

@@ -52,7 +52,7 @@ def world_xml():
 class Painting:
     def __init__(self):
         spec=mujoco.MjSpec.from_string(world_xml())
-        robot=mujoco.MjSpec.from_file(paths.model('robot_allcollisions_mouth.xml'))
+        robot=mujoco.MjSpec.from_file(paths.model('robot/robot_allcollisions_mouth.xml'))
         head=robot.body('jaw_soft')
         brush=head.add_body(name='brush',pos=[-.00809334,0,-.0727383])
         # Fixed relative transform models a brush already clamped in the mouth.

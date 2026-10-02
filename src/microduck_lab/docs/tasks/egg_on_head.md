@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-05.
 **Script:** `src/microduck_lab/tasks/objects/egg_on_head.py`.
-**Scene:** `src/microduck_lab/models/scene_egg.xml` (egg as a free
+**Scene:** `src/microduck_lab/models/objects/scene_egg.xml` (egg as a free
 body) and `robot_allcollisions_egg.xml` (a copy of `robot_allcollisions.xml`
 plus one geom, the head pad).
 **Policy:** the pretrained `alpha_walking.onnx`, unchanged. The script adds a

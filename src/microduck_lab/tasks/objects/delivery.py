@@ -38,7 +38,7 @@ from microduck_lab.tasks.objects.pick_up import (  # noqa: E402
     MOUTH_OPEN, MOUTH_SHUT, SETTLE_S, BACKOFF_S, AIM_TOL, TURN_GAIN, CRUISE,
 )
 
-SCENE = "src/microduck_lab/models/scene_delivery.xml"
+SCENE = "src/microduck_lab/models/objects/scene_delivery.xml"
 # The pretrained policies live in the sibling repo (HANDOFF.md).
 POLICIES = os.path.join(os.path.dirname(duck_sim.REPO), "microduck", "policies")
 

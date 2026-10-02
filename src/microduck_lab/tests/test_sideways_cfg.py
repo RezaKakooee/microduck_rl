@@ -10,8 +10,8 @@ import numpy as np
 # and importing a lab module before it would re-enter it half-built.
 import mjlab_microduck.tasks  # noqa: F401
 from microduck_lab import paths
-from microduck_lab.rl import mdp_sideways
-from microduck_lab.rl.microduck_velocity_sideways_env_cfg import (
+from microduck_lab.rl.walking import mdp_sideways
+from microduck_lab.rl.walking.microduck_velocity_sideways_env_cfg import (
     HIP_ROLL_STD_WALKING,
     MicroduckSidewaysRlCfg,
     SIDEWAYS_FRACTION,
@@ -93,7 +93,7 @@ def test_mirror_table_matches_the_model():
 
 # -- Mjlab-Bridge-Sideways-MicroDuck --------------------------------------------
 
-from microduck_lab.rl import microduck_bridge_sideways_env_cfg as bridge  # noqa: E402
+from microduck_lab.rl.human_bridge import microduck_bridge_sideways_env_cfg as bridge  # noqa: E402
 
 
 def test_bridge_envs_share_one_origin():
@@ -153,7 +153,7 @@ def test_bridge_geometry_compiles():
 def test_stepping_is_priced():
     """v1/v2 slid their feet. The swing-height and linear slip costs are the
     fix; both must be costs (negative weight on >= 0 functions)."""
-    from microduck_lab.rl import microduck_velocity_sideways_env_cfg as side
+    from microduck_lab.rl.walking import microduck_velocity_sideways_env_cfg as side
     r = make_microduck_velocity_sideways_env_cfg().rewards
     assert r["foot_swing_height"].weight == side.SWING_HEIGHT_WEIGHT < -1.0
     assert r["foot_slip_linear"].weight < 0
@@ -162,7 +162,7 @@ def test_stepping_is_priced():
 
 def test_lift_reward_ignores_hovering():
     """swing_lift must pay nothing below the resting site height (10.3 mm)."""
-    from microduck_lab.rl import microduck_velocity_sideways_env_cfg as side
+    from microduck_lab.rl.walking import microduck_velocity_sideways_env_cfg as side
     r = make_microduck_velocity_sideways_env_cfg().rewards["swing_lift"]
     assert r.weight > 0 and r.params["low"] >= 0.010 and r.params["high"] > r.params["low"]
     assert side.SWING_HEIGHT_TARGET > 0.020

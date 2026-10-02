@@ -9,7 +9,7 @@ term. It is checked here against the real model rather than asserted in prose.
 import mujoco
 import pytest
 
-from microduck_lab.rl.microduck_spiral_env_cfg import (
+from microduck_lab.rl.skating.microduck_spiral_env_cfg import (
     HIP_EXTENSION,
     SKATING_AIR_TIME_WEIGHT,
     make_microduck_spiral_env_cfg,
@@ -81,7 +81,7 @@ def test_pose_terms_are_gated_on_rolling_and_upright():
     trunk velocity, which a fall supplies. spiral_free_leg went 0.06 -> 2.14
     while wheel_speed went to 0 and falls went up 11x. Wheels only turn if the
     robot is really rolling, and the tilt gate closes once it is going over."""
-    from microduck_lab.rl import mdp_pose as mdp
+    from microduck_lab.rl.skating import mdp_pose as mdp
     import inspect
 
     for fn in (mdp.spiral_free_leg_reward, mdp.single_support_hold_reward):
@@ -97,7 +97,7 @@ def test_hold_latch_makes_a_walking_stride_worth_zero():
     foot for 0.11 s, was in single support 92% of the time, and carried a
     free-leg hip of +0.99 rad against a +1.10 target. The latch has to exclude
     that stride at EVERY curriculum stage."""
-    from microduck_lab.rl.microduck_spiral_env_cfg import MIN_HOLD_STAGES
+    from microduck_lab.rl.skating.microduck_spiral_env_cfg import MIN_HOLD_STAGES
 
     # v1's stroking walk: mean hold 0.11 s, LONGEST 0.12 s. The bound that
     # matters is the longest — a latch under it would admit the best stride.
@@ -135,7 +135,7 @@ def test_standing_still_scores_far_below_the_pose():
     At v5's std_wide=1.8 standing scored 0.237 against a perfect 1.000 — a 4.2x
     ratio — and the policy never lifted a foot in 10000 iterations."""
     import numpy as np
-    from microduck_lab.rl.microduck_spiral_env_cfg import (
+    from microduck_lab.rl.skating.microduck_spiral_env_cfg import (
         HIP_EXTENSION, POSE_STD_TIGHT, POSE_STD_WIDE,
     )
 

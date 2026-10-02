@@ -1,7 +1,7 @@
 # Delivery task — pick up a cube, carry it to a target, drop it there
 
 **Date:** 2026-09-03.
-**Script:** `src/microduck_lab/tasks/objects/delivery.py`. **Scene:** `src/microduck_lab/models/scene_delivery.xml`.
+**Script:** `src/microduck_lab/tasks/objects/delivery.py`. **Scene:** `src/microduck_lab/models/objects/scene_delivery.xml`.
 
 ## What it does
 
@@ -118,7 +118,7 @@ writes at 30 fps, so every clip in `videos/` plays about 1.2x fast.
 ## Files
 
 - `src/microduck_lab/tasks/objects/delivery.py` — new.
-- `src/microduck_lab/models/scene_delivery.xml` — new; a copy of
+- `src/microduck_lab/models/objects/scene_delivery.xml` — new; a copy of
   `scene_pickup.xml` plus two non-colliding disc geoms (`target_zone`,
   `target_centre`). The script moves them to `--target` and sets the big
   disc's radius to `--radius`.

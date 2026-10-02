@@ -18,7 +18,7 @@ success.
 Why sideways: walking forward her feet sit 84 mm apart and his trunk is 64 mm
 wide. Sideways her feet go one behind the other along his length and each
 sole lies across his back. The policy was fine-tuned on his baked body
-(`rl/microduck_bridge_sideways_env_cfg.py`); here he is the real, physical
+(`rl/human_bridge/microduck_bridge_sideways_env_cfg.py`); here he is the real, physical
 brother again.
 
     python -m microduck_lab.tasks.human_bridge.rl_policy.story --policy bridge_v1.onnx
@@ -183,7 +183,7 @@ class Story:
     def __init__(self, policy, verbose=True, blind=False):
         import onnxruntime as ort
         import mjlab_microduck.tasks  # noqa: F401  (registers tasks; must load before the lab cfg)
-        from microduck_lab.rl.microduck_bridge_sideways_env_cfg import surface_table
+        from microduck_lab.rl.human_bridge.microduck_bridge_sideways_env_cfg import surface_table
         self.table = surface_table()
         self.blind = blind      # policies trained before the bridge-state slots existed
         self.world = w = World(L.design())

@@ -23,14 +23,14 @@ import numpy as np
 
 import mujoco  # noqa: E402
 from microduck_lab.sim.duck_sim import CONTROL_DT, DECIMATION, FALL_HEIGHT, REPO, Recorder, load_scene, make_policy  # noqa: E402
-from microduck_lab.rl.mdp_blades import (  # noqa: E402
+from microduck_lab.rl.skating.mdp_blades import (  # noqa: E402
     LOAD_EPS_N,
     PAIR_AXIS_WORLD_X,
     PAIR_AXIS_WORLD_Y,
     sole_long_axis_in_body,
 )
 
-BLADES_XML = os.path.join(REPO, "src/microduck_lab/models/scene_blades.xml")
+BLADES_XML = os.path.join(REPO, "src/microduck_lab/models/skating/scene_blades.xml")
 PAIRS = (("blade_left", "left_foot_collision"), ("blade_right", "right_foot_collision"))
 
 

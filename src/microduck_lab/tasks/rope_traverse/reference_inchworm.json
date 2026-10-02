@@ -1,0 +1,21 @@
+{
+  "lead_in": -0.38,
+  "lead_out": 0.38,
+  "trail_out": -0.38,
+  "trail_in": 0.38,
+  "clamp_knee": 1.4,
+  "clamp_ankle": -0.5,
+  "free_knee": 0.36,
+  "free_ankle": 0.06,
+  "carry_knee": 0.36,
+  "carry_ankle": 0.06,
+  "grip_trail": 1.2,
+  "slide_lead": 1.2,
+  "grip_lead": 1.2,
+  "slide_trail": 1.2,
+  "relax": 1.2,
+  "carry": 1.2,
+  "start": 1.5,
+  "trial": "rope_try62",
+  "note": "hand-tuned; 13 cycles = 165 mm, traverse passed"
+}

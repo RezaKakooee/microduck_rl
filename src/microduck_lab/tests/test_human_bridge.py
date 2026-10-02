@@ -186,7 +186,7 @@ class Baked(unittest.TestCase):
         import mujoco
         import mjlab_microduck.tasks  # noqa: F401
         from scipy.spatial import cKDTree
-        from microduck_lab.rl.microduck_bridge_sideways_env_cfg import add_bridge
+        from microduck_lab.rl.human_bridge.microduck_bridge_sideways_env_cfg import add_bridge
         from microduck_lab.tasks.human_bridge.rl_policy.brother import HoldStraight
         w = World(L.design(), cast=("he",))
         he = w.ducks["he"]

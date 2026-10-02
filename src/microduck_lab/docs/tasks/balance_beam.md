@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-04.
 **Script:** `src/microduck_lab/tasks/walking/balance_beam.py`.
-**Scene:** `src/microduck_lab/models/scene_beam.xml` (template; the
+**Scene:** `src/microduck_lab/models/bridge/scene_beam.xml` (template; the
 script rewrites the beam line into `scene_beam_w<W>.xml` for each width).
 **Policy:** the pretrained `alpha_walking.onnx`, unchanged. The script adds
 only a steering loop on top of it.

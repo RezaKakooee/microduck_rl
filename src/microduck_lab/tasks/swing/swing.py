@@ -142,7 +142,7 @@ class Swing:
         if dismantle_at is not None and seated_until is None:self.seated_until=dismantle_at
         self.length=length
         spec=mujoco.MjSpec.from_string(world_xml(length,damping,dismantle_at is not None))
-        spec.attach(mujoco.MjSpec.from_file(paths.model('robot_allcollisions_mouth.xml')),
+        spec.attach(mujoco.MjSpec.from_file(paths.model('robot/robot_allcollisions_mouth.xml')),
                     prefix='he_',frame=spec.worldbody.add_frame())
         bam=load_model(motor_name='xl330',model='m6')
         bam.actuator.kp=200;bam.actuator.vin=voltage;bam.actuator.max_current=1.75

@@ -13,9 +13,9 @@ path, so no `sys.path` juggling and no "run it from the repo root".
 | `paths.py` | every path the code needs, worked out once |
 | `sim/` | `duck_sim.py`, the shared MuJoCo + ONNX policy setup, and `upstream.py` |
 | `film/` | the duck-film set builders: `stage`, `geometry`, `scene_v2`, `physical_stage` |
-| `rl/` | our RL env cfgs (incl. sideways walking and the human-bridge crossing), their reward modules, `warmstart.py`, `register.py`, and one folder per human-bridge policy (`rl_policy/` holds the narrow-beam walker) |
-| `models/` | our robot variants and scene XML |
-| `tasks/` | the scripted tasks, grouped by kind |
+| `rl/` | our RL tasks, one folder per skill (see below), and `register.py` |
+| `models/` | our robot variants and scene XML, one folder per skill (see below) |
+| `tasks/` | the scripted tasks, one folder per skill |
 | `tools/` | `headless_rollout.py`, `blades_warp_check.py` |
 | `render/` | `render.sh`, one target per set of clips |
 | `tests/` | our tests (upstream's stay in the repo's `tests/`) |
@@ -25,16 +25,44 @@ path, so no `sys.path` juggling and no "run it from the repo root".
 
 | folder | scripts |
 |---|---|
+| `common/` | `world` and `runtime`, shared by the scripted skills below (a copy of the human bridge world) |
 | `balance_board/` | `board`, `lqr`, `rocking`, `rocking_asym`, `pattern`, `expert` |
 | `bridge/` | `bridge` (loose catenary suspension bridge with soft contact compliance); [doc](docs/tasks/suspension_bridge.md) |
 | `crawl/` | `crawl`, `expert` (alternating), `baby` (synchronized tuck/drive); [comparison](docs/tasks/crawl.md) |
 | `human_bridge/` | one folder per policy: `rl_policy/` (`world`, `scene`, `brother`, `bake`, `story` with the strict rules; she walks across in simulation, 2 of 3), `scripted_policy/`, `crawl_policy/`: [status](docs/tasks/human_bridge.md) |
+| `jump/` | scripted jump: `world`, `video` |
 | `love_story/` | `original`, `dispenser`, `v2` |
 | `objects/` | `pick_up`, `delivery`, `kick_ball`, `egg_on_head` |
 | `painting/` | `painting` (chair, brush, easel), `expert` (flower); [notes](docs/tasks/painting.md) |
+| `rope_traverse/` | hang from a rope by the legs and inch sideways; [README](tasks/rope_traverse/README.md) |
+| `salmon_jump/` | roll up from the back, hop and land; [README](tasks/salmon_jump/README.md) |
 | `skating/` | `expert_spiral`, `blades_rollout`, `ice_experts/` |
 | `swing/` | `swing` (physical set), `expert` (phase-feedback pumping) |
+| `trampoline/` | scripted bouncing and flips on a trampoline |
 | `walking/` | `balance_beam`, `eval_slope`, `sideways` (sideways-walk eval: speed, turn, foot lift, slip) |
+
+### rl/
+
+| folder | RL tasks |
+|---|---|
+| `skating/` | ice, blades, spiral and arabesque (`Mjlab-Velocity-Ice`, `-Blades`, `Mjlab-Spiral-Flat`, `Mjlab-Arabesque-Flat`) |
+| `walking/` | sideways walking and slopes (`Mjlab-Velocity-Sideways`, `-Slopes`) |
+| `human_bridge/` | the crossing (`Mjlab-Bridge-Sideways`, `warmstart.py`) and one folder per policy: `rl_policy/` (the narrow-beam walker), `scripted_policy/`, `crawl_policy/` |
+| top level | `register.py`; the trampoline files (`*trampoline*`) still sit here and move to `trampoline/` later |
+
+### models/
+
+| folder | files |
+|---|---|
+| `robot/` | robot variants shared by many skills (`mouth`, `egg`) and `add_mouth.py` |
+| `bridge/` | `scene_beam.xml`, the bridge template, and the bridge test scenes |
+| `objects/` | `scene_pickup`, `scene_delivery`, `scene_egg` |
+| `skating/` | `scene_ice`, `scene_blades` |
+| `walking/` | `scene_slope` |
+| top level | the board-feet robot, the balance-board scenes and the trampoline scenes; they move to their folders together later |
+
+A scene and the robot file it includes must sit at the same folder depth:
+MuJoCo reads the robot's `meshdir` relative to the scene file.
 
 ## Paths in the docs
 

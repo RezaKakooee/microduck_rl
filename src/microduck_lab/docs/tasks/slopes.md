@@ -12,11 +12,11 @@ Everything here is measured, not planned, unless it says otherwise.
 
 | File | What it is |
 |---|---|
-| `src/microduck_lab/rl/microduck_velocity_terrain_env_cfg.py` | The task cfg. Built on `make_microduck_velocity_env_cfg(rough=True)`, so DR / obs / noise / delays and the rough-terrain NaN guards come for free. Adds its own terrain generator, a planar-faced slope heightfield class, and a terrain curriculum. |
-| `src/microduck_lab/rl/mdp_terrain.py` | One curriculum function (`terrain_levels_walk`) and its pure helper. Nothing was added to `mdp.py`. |
+| `src/microduck_lab/rl/walking/microduck_velocity_terrain_env_cfg.py` | The task cfg. Built on `make_microduck_velocity_env_cfg(rough=True)`, so DR / obs / noise / delays and the rough-terrain NaN guards come for free. Adds its own terrain generator, a planar-faced slope heightfield class, and a terrain curriculum. |
+| `src/microduck_lab/rl/walking/mdp_terrain.py` | One curriculum function (`terrain_levels_walk`) and its pure helper. Nothing was added to `mdp.py`. |
 | `src/mjlab_microduck/tasks/__init__.py` | One block appended at the end: registers `Mjlab-Velocity-Slopes-MicroDuck`. |
 | `src/microduck_lab/src/microduck_lab/tests/test_terrain_cfg.py` | 10 CPU tests (see section 5). |
-| `src/microduck_lab/models/scene_slope.xml` | CPU MuJoCo evaluation scene: plane + box ramp up, box ramp down, three risers. |
+| `src/microduck_lab/models/walking/scene_slope.xml` | CPU MuJoCo evaluation scene: plane + box ramp up, box ramp down, three risers. |
 | `src/microduck_lab/tasks/walking/eval_slope.py` | Runs an ONNX walking policy on that scene and reports how far it got. |
 | `videos/eval_slope/slope_baseline.mp4`, `videos/eval_slope/slope_baseline_steps.mp4` | The pretrained walker on the ramp and on the steps. |
 

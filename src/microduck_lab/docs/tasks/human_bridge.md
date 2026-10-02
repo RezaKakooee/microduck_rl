@@ -39,9 +39,9 @@ positions, checkpoint 1000 crossed about 65% of the time.
 
 | Policy | Code | RL task | Scratch | Videos |
 |---|---|---|---|---|
-| RL (this doc) | `tasks/human_bridge/rl_policy/` | `rl/rl_policy/` | `local_storage/hb_dev/rl_policy/` | `videos/human_bridge/rl_policy/` |
-| Scripted | `tasks/human_bridge/scripted_policy/` | `rl/scripted_policy/` | `local_storage/hb_dev/scripted_policy/` | `videos/human_bridge/scripted_policy/` |
-| Crawl | `tasks/human_bridge/crawl_policy/` | `rl/crawl_policy/` | `local_storage/hb_dev/crawl_policy/` | `videos/human_bridge/crawl_policy/` |
+| RL (this doc) | `tasks/human_bridge/rl_policy/` | `rl/human_bridge/rl_policy/` | `local_storage/hb_dev/rl_policy/` | `videos/human_bridge/rl_policy/` |
+| Scripted | `tasks/human_bridge/scripted_policy/` | `rl/human_bridge/scripted_policy/` | `local_storage/hb_dev/scripted_policy/` | `videos/human_bridge/scripted_policy/` |
+| Crawl | `tasks/human_bridge/crawl_policy/` | `rl/human_bridge/crawl_policy/` | `local_storage/hb_dev/crawl_policy/` | `videos/human_bridge/crawl_policy/` |
 
 Each policy uses only its own folders. `tasks/human_bridge/rl_policy/` holds
 the world, set, brother, story, rules and bake that this doc describes.
@@ -83,7 +83,7 @@ A crossing counts only if, from the moment she starts walking:
 The same rules score the fast replica test and the real story. Look at the
 video frames yourself before calling anything a success.
 
-## 5. The walker that works: `Mjlab-Velocity-SidewaysBeam-MicroDuck` (`rl/rl_policy/`)
+## 5. The walker that works: `Mjlab-Velocity-SidewaysBeam-MicroDuck` (`rl/human_bridge/rl_policy/`)
 
 Why a new skill: measuring showed the old sideways walker (v4 iter 1000) plus a
 simple steering law crossed FLAT beams down to 28 mm wide. It failed on almost

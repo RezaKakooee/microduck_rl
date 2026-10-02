@@ -52,7 +52,7 @@ The videos are `videos/human_bridge/scripted_policy/bake_try1.mp4` and
 This folder belongs to codex. Other agents must not edit it.
 Its videos go to videos/human_bridge/scripted_policy/ and its scratch work to local_storage/hb_dev/scripted_policy/.
 The physics, scene, brother controller, camera, judging helpers and baked pose are owned here. Do not import bridge code from another agent's folder.
-Its RL code (task configs, MDP terms) goes to src/microduck_lab/rl/scripted_policy/.
+Its RL code (task configs, MDP terms) goes to src/microduck_lab/rl/human_bridge/scripted_policy/.
 
 # Scripted human bridge
 

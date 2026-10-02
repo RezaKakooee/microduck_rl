@@ -1,4 +1,4 @@
-"""Registers our eight RL tasks with mjlab.
+"""Registers our RL tasks with mjlab.
 
 These registrations used to sit in upstream `mjlab_microduck/tasks/__init__.py`
 as 71 lines of ours in the middle of theirs. Every upstream merge had to be
@@ -19,47 +19,65 @@ half-built, so its class does not exist yet. This registers:
     Mjlab-Velocity-Sideways-MicroDuck   walking recipe that really steps sideways
     Mjlab-Bridge-Sideways-MicroDuck     step sideways across a brother lying over a gap
     Mjlab-Velocity-SidewaysBeam-MicroDuck  step sideways along narrow beams with height changes
+    Mjlab-Trampoline-Flip-MicroDuck     front flip on a trampoline, land on the feet, keep bouncing
+    Mjlab-Trampoline-PumpFlip-MicroDuck start standing, bounce a few times, then the flip
+    Mjlab-Trampoline-PumpFlipCurriculum-MicroDuck  the same, reached in steps from drop starts
+    Mjlab-Trampoline-PumpFlipCurriculumSlow-MicroDuck  the same with stages twice as long
+    Mjlab-Trampoline-Bounce-MicroDuck   start standing and keep bouncing (no flip)
+    Mjlab-Trampoline-BounceHigh-MicroDuck  the same, paid up to 0.30 m bounces (hand-over height for the flip)
+    Mjlab-Trampoline-BounceHighPose-MicroDuck  the same, in the standing pose at the top of each flight
+    Mjlab-Trampoline-BounceHighPoseTight-MicroDuck  the same, pose_std 1.0 (bounce3 at 2.0 kept the neck ~40 deg off)
+    Mjlab-Trampoline-FlipAnyPose-MicroDuck  the flip from drops, from wider start poses and tilts (for the hand-over)
 """
 
 from __future__ import annotations
 
 from mjlab.tasks.registry import register_mjlab_task
 
-from microduck_lab.rl.microduck_arabesque_env_cfg import (
+from microduck_lab.rl.skating.microduck_arabesque_env_cfg import (
     make_microduck_arabesque_env_cfg,
     MicroduckArabesqueRlCfg,
 )
-from microduck_lab.rl.microduck_spiral_env_cfg import (
+from microduck_lab.rl.skating.microduck_spiral_env_cfg import (
     make_microduck_spiral_env_cfg,
     MicroduckSpiralRlCfg,
 )
-from microduck_lab.rl.microduck_velocity_ice_env_cfg import (
+from microduck_lab.rl.skating.microduck_velocity_ice_env_cfg import (
     make_microduck_velocity_ice_env_cfg,
     MicroduckIceRlCfg,
 )
-from microduck_lab.rl.microduck_velocity_terrain_env_cfg import (
+from microduck_lab.rl.walking.microduck_velocity_terrain_env_cfg import (
     make_microduck_velocity_terrain_env_cfg,
     MicroduckSlopesRlCfg,
 )
-from microduck_lab.rl.microduck_velocity_blades_env_cfg import (
+from microduck_lab.rl.skating.microduck_velocity_blades_env_cfg import (
     make_microduck_velocity_blades_env_cfg,
     MicroduckBladesRlCfg,
 )
-from microduck_lab.rl.microduck_bridge_sideways_env_cfg import (
+from microduck_lab.rl.human_bridge.microduck_bridge_sideways_env_cfg import (
     make_microduck_bridge_sideways_env_cfg,
     MicroduckBridgeSidewaysRlCfg,
 )
-from microduck_lab.rl.microduck_velocity_sideways_env_cfg import (
+from microduck_lab.rl.walking.microduck_velocity_sideways_env_cfg import (
     make_microduck_velocity_sideways_env_cfg,
     MicroduckSidewaysRlCfg,
 )
-from microduck_lab.rl.rl_policy.microduck_velocity_sideways_beam_env_cfg import (
+from microduck_lab.rl.human_bridge.rl_policy.microduck_velocity_sideways_beam_env_cfg import (
     make_microduck_velocity_sideways_beam_env_cfg,
     MicroduckSidewaysBeamRlCfg,
 )
+from microduck_lab.rl.microduck_trampoline_flip_env_cfg import (
+    make_microduck_trampoline_flip_env_cfg,
+    MicroduckTrampolineFlipRlCfg,
+    MicroduckTrampolinePumpFlipRlCfg,
+    BOUNCE_POSE_STD,
+    make_microduck_trampoline_bounce_env_cfg,
+    make_microduck_trampoline_flip_anypose_env_cfg,
+    MicroduckTrampolineBounceRlCfg,
+)
 
 def register_all(runner_cls) -> None:
-    """Register our eight tasks. Called once, from `mjlab_microduck.tasks`."""
+    """Register our tasks. Called once, from `mjlab_microduck.tasks`."""
     # Arabesque — stand on one leg, other leg extended behind (normal feet).
     register_mjlab_task(
         task_id="Mjlab-Arabesque-Flat-MicroDuck",
@@ -138,5 +156,87 @@ def register_all(runner_cls) -> None:
         env_cfg=make_microduck_velocity_sideways_beam_env_cfg(),
         play_env_cfg=make_microduck_velocity_sideways_beam_env_cfg(play=True),
         rl_cfg=MicroduckSidewaysBeamRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Trampoline flip — bounce, front flip in the air, land on the feet, keep
+    # bouncing, on a spring bed entity at a 1 ms step
+    # (microduck_trampoline_flip_env_cfg.py, trampoline_scene.py).
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-Flip-MicroDuck",
+        env_cfg=make_microduck_trampoline_flip_env_cfg(),
+        play_env_cfg=make_microduck_trampoline_flip_env_cfg(play=True),
+        rl_cfg=MicroduckTrampolineFlipRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Pump-flip — the same, but it starts standing on the bed and the flip only
+    # counts after a few bounces (make_..._env_cfg(pump_first=True)).
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-PumpFlip-MicroDuck",
+        env_cfg=make_microduck_trampoline_flip_env_cfg(pump_first=True),
+        play_env_cfg=make_microduck_trampoline_flip_env_cfg(play=True, pump_first=True),
+        rl_cfg=MicroduckTrampolinePumpFlipRlCfg,
+        runner_cls=runner_cls,
+    )
+
+
+    # Pump-flip curriculum — from drop starts (the flip that works) to standing
+    # starts with 3 bounces first, in steps (PUMP_CURRICULUM).
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-PumpFlipCurriculum-MicroDuck",
+        env_cfg=make_microduck_trampoline_flip_env_cfg(pump_first=True, curriculum=True),
+        play_env_cfg=make_microduck_trampoline_flip_env_cfg(play=True, pump_first=True, curriculum=True),
+        rl_cfg=MicroduckTrampolinePumpFlipRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-PumpFlipCurriculumSlow-MicroDuck",
+        env_cfg=make_microduck_trampoline_flip_env_cfg(pump_first=True, curriculum=True, stretch=2.0),
+        play_env_cfg=make_microduck_trampoline_flip_env_cfg(play=True, pump_first=True, curriculum=True, stretch=2.0),
+        rl_cfg=MicroduckTrampolinePumpFlipRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    # Bounce — start standing, pump to a steady bounce height, stay upright (no
+    # flip): the first half of a bounce-then-flip policy pair.
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-Bounce-MicroDuck",
+        env_cfg=make_microduck_trampoline_bounce_env_cfg(),
+        play_env_cfg=make_microduck_trampoline_bounce_env_cfg(play=True),
+        rl_cfg=MicroduckTrampolineBounceRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-BounceHigh-MicroDuck",
+        env_cfg=make_microduck_trampoline_bounce_env_cfg(target=0.30),
+        play_env_cfg=make_microduck_trampoline_bounce_env_cfg(play=True, target=0.30),
+        rl_cfg=MicroduckTrampolineBounceRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-BounceHighPose-MicroDuck",
+        env_cfg=make_microduck_trampoline_bounce_env_cfg(target=0.30, pose_std=BOUNCE_POSE_STD),
+        play_env_cfg=make_microduck_trampoline_bounce_env_cfg(play=True, target=0.30, pose_std=BOUNCE_POSE_STD),
+        rl_cfg=MicroduckTrampolineBounceRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-BounceHighPoseTight-MicroDuck",
+        env_cfg=make_microduck_trampoline_bounce_env_cfg(target=0.30, pose_std=1.0),
+        play_env_cfg=make_microduck_trampoline_bounce_env_cfg(play=True, target=0.30, pose_std=1.0),
+        rl_cfg=MicroduckTrampolineBounceRlCfg,
+        runner_cls=runner_cls,
+    )
+
+    register_mjlab_task(
+        task_id="Mjlab-Trampoline-FlipAnyPose-MicroDuck",
+        env_cfg=make_microduck_trampoline_flip_anypose_env_cfg(),
+        play_env_cfg=make_microduck_trampoline_flip_anypose_env_cfg(play=True),
+        rl_cfg=MicroduckTrampolineFlipRlCfg,
         runner_cls=runner_cls,
     )

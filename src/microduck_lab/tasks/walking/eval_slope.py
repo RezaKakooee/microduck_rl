@@ -8,7 +8,7 @@ how far it got before falling.
     uv run python -m microduck_lab.tasks.walking.eval_slope --walking ... --lane down
     MUJOCO_GL=egl uv run python -m microduck_lab.tasks.walking.eval_slope --walking ... --lane up --video videos/eval_slope/slope_baseline.mp4
 
-Scene: src/microduck_lab/models/scene_slope.xml (plane + boxes).
+Scene: src/microduck_lab/models/walking/scene_slope.xml (plane + boxes).
 Lanes are separated in y; the robot spawns at x=0 facing +x and is commanded
 forward, so "distance along x" is progress into the obstacle. `--ramp-deg`
 re-poses both ramps for another angle at load time.
@@ -30,7 +30,7 @@ from microduck_lab.sim.duck_sim import (  # noqa: E402
     REPO, CONTROL_DT, DECIMATION, FALL_HEIGHT, Recorder, load_scene, make_policy,
 )
 
-SCENE = "src/microduck_lab/models/scene_slope.xml"
+SCENE = "src/microduck_lab/models/walking/scene_slope.xml"
 
 # Scene geometry (must match scene_slope.xml).
 RAMP_START_X = 0.5      # ramp foot (lane up) / ramp head (lane down)

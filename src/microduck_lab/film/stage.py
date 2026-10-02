@@ -18,7 +18,7 @@ from microduck_lab import paths
 from microduck_lab.film import geometry as geo
 
 REPO = str(paths.REPO)
-DUCK_XML = paths.model("robot_allcollisions_mouth.xml")
+DUCK_XML = paths.model("robot/robot_allcollisions_mouth.xml")
 
 # ---------------------------------------------------------------------------
 # Cast and colours

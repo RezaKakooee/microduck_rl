@@ -1,0 +1,1 @@
+"""Skating skill."""

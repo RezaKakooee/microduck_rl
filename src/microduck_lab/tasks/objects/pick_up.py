@@ -26,7 +26,7 @@ import mujoco  # noqa: E402
 from microduck_lab.sim import duck_sim
 from microduck_lab.sim.duck_sim import CONTROL_DT, DECIMATION  # noqa: E402
 
-SCENE = "src/microduck_lab/models/scene_pickup.xml"
+SCENE = "src/microduck_lab/models/objects/scene_pickup.xml"
 
 # Where to stand so the beak lands ON the cube, measured by tracing mouth_tip
 # through a pick in this task (not from a standing start -- the two differ):

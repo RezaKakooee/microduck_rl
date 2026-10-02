@@ -8,7 +8,7 @@ Full write-up: [docs/tasks/human_bridge.md](tasks/human_bridge.md). Short versio
 
 - **Goal:** one duck lies across a gap; the other WALKS across his back.
 - **Works in simulation, not every time:** the narrow-beam sideways walker
-  (`Mjlab-Velocity-SidewaysBeam-MicroDuck`, `rl/rl_policy/`, checkpoint 2000)
+  (`Mjlab-Velocity-SidewaysBeam-MicroDuck`, `rl/human_bridge/rl_policy/`, checkpoint 2000)
   crosses the real brother 2 of 3 times from the normal start, under the strict
   rules in `tasks/human_bridge/rl_policy/story.py` (`Judge`).
 - **Failures:** always at an edge; her tilted foot's ankle bracket clips a ledge

@@ -8,7 +8,7 @@ from microduck_lab.sim import duck_sim
 from microduck_lab.sim.duck_sim import CONTROL_DT, DECIMATION
 
 WALKING_ONNX = os.path.join(os.path.dirname(duck_sim.REPO), "microduck", "policies", "alpha_walking.onnx")
-TEMPLATE = paths.model("scene_beam.xml")
+TEMPLATE = paths.model("bridge/scene_beam.xml")
 
 def build_articulated_loose_net(
     span=1.6,
@@ -124,7 +124,7 @@ def test_iteration(center_kz=150.0, speed=0.22, start_x=-0.05):
     needle = '<geom name="beam" type="box" size="1.0000 0.0500 0.0200" pos="0.7000 0 0.0200" rgba="0.85 0.65 0.35 1" />'
     scene_str = tmpl.replace(needle, xml_str)
     
-    scene_path = paths.model("scene_iter_test.xml")
+    scene_path = paths.model("bridge/scene_iter_test.xml")
     with open(scene_path, "w") as f:
         f.write(scene_str)
         

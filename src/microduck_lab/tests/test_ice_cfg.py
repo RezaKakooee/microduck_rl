@@ -8,7 +8,7 @@ would quietly train on ordinary ground.
 
 import mujoco
 
-from microduck_lab.rl.microduck_velocity_ice_env_cfg import (
+from microduck_lab.rl.skating.microduck_velocity_ice_env_cfg import (
     ICE_FLOOR_MU,
     ICE_FOOT_MU_RANGE,
     ICE_FRICTION_STAGES,

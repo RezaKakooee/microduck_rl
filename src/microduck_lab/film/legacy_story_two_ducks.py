@@ -56,7 +56,7 @@ import mujoco
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DUCK_XML = os.path.join(
-    REPO, "src/microduck_lab/models/robot_allcollisions_mouth.xml"
+    REPO, "src/microduck_lab/models/robot/robot_allcollisions_mouth.xml"
 )
 
 # ---------------------------------------------------------------------------
